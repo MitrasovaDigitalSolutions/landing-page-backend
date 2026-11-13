@@ -10,8 +10,8 @@ Route::get('/docs', function () {
     return view('swagger');
 });
 
-Route::get('/docs/openapi.json', function () {
-    $path = public_path('docs/openapi.json');
+Route::get('/openapi.json', function () {
+    $path = public_path('openapi.json');
     if (! file_exists($path)) {
         abort(404, 'OpenAPI specification not found');
     }

@@ -234,7 +234,7 @@ class TenantApiTest extends TestCase
         $docs = $this->get('/docs');
         $docs->assertStatus(200);
 
-        $spec = $this->get('/docs/openapi.json');
+        $spec = $this->get('/openapi.json');
         $spec->assertStatus(200)
             ->assertHeader('Content-Type', 'application/json');
     }

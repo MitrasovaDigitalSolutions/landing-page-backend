@@ -30,7 +30,7 @@
     <script>
         window.onload = function() {
             window.ui = SwaggerUIBundle({
-                url: "{{ url('/docs/openapi.json') }}",
+                url: "{{ url('/openapi.json') }}",
                 dom_id: '#swagger-ui',
                 deepLinking: true,
                 presets: [

@@ -49,7 +49,7 @@ Server aktif di `http://localhost:8000`.
 ## 4. Dokumentasi OpenAPI & Swagger UI
 
 * **Interactive Swagger UI:** Buka di browser: `http://localhost:8000/docs`
-* **OpenAPI Raw JSON:** `http://localhost:8000/docs/openapi.json`
+* **OpenAPI Raw JSON:** `http://localhost:8000/openapi.json`
 * Terdapat tombol **"Authorize"** di Swagger UI untuk memasukkan header `X-Site-Key` (misal: `key-ksp-12345` atau `ksp`).
 
 ---
