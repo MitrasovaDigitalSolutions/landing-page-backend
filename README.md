@@ -136,3 +136,25 @@ server {
 php artisan test
 ```
 Seluruh 23 test (152 assertions) menguji isolasi tenancy, validasi header `X-Site-Key`, CRUD query scope, validasi form inquiries & upload file, serta route Swagger UI.
+
+---
+
+## 8. Deployment Production (Manual)
+
+CI (`.github/workflows/deploy.yml`) hanya build & push image ke `ghcr.io/mitrasovadigitalsolutions/landing-page-backend:latest`. Job `deploy` **tidak aktif** karena repo belum punya secrets (`VPS_HOST`, `VPS_USERNAME`, `VPS_SSH_KEY`), jadi deploy dilakukan manual:
+
+```bash
+ssh ubuntu@43.157.197.42
+cd /home/workspace/landing-page-backend-docker
+docker compose -f docker-compose.prod.yml pull
+docker compose -f docker-compose.prod.yml up -d --remove-orphans
+```
+
+Migration otomatis jalan saat container start (`docker-entrypoint.sh` menjalankan `php artisan migrate --force`).
+
+Setelah deploy, cek cepat:
+
+```bash
+curl -s -o /dev/null -w '%{http_code}\n' http://43.157.197.42:8088/api/v1/settings -H 'X-Site-Key: ksp'
+curl -s -o /dev/null -w '%{http_code}\n' http://43.157.197.42:8088/docs
+```
