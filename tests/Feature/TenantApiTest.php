@@ -9,7 +9,12 @@ class TenantApiTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected bool $seed = true;
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->seed();
+    }
+
     public function test_missing_site_key_returns_400(): void
     {
         $response = $this->getJson('/api/v1/settings');

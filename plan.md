@@ -373,3 +373,115 @@ export default async function RootLayout() {
   };
   module.exports = nextConfig;
   ```
+
+---
+
+## 8. Autentikasi Admin & Endpoint CRUD CMS
+
+Bagian ini untuk membangun **dashboard admin** (terpisah dari landing page publik). Frontend publik cukup memakai endpoint read-only di bagian 5; mutasi konten dilakukan oleh admin yang login.
+
+### 8.1 Alur Login
+
+```
+POST /api/v1/auth/login   { email, password }
+   -> 200 { data: { token, user: { id, name, email, is_superadmin, sites[] } } }
+```
+
+Simpan `token`, lalu kirim di setiap request admin:
+
+```http
+Authorization: Bearer <token>
+X-Site-Key: ksp
+```
+
+* `X-Site-Key` menentukan **tenant mana** yang sedang dikelola.
+* `GET /api/v1/auth/me` untuk restore sesi saat halaman di-refresh.
+* `POST /api/v1/auth/logout` untuk revoke token aktif.
+* Token tidak punya masa berlaku otomatis — revoke manual saat logout. Simpan di `httpOnly cookie` (disarankan) atau `secure storage`, jangan di `localStorage` polos.
+
+### 8.2 Peran & Hak Akses
+
+| Peran | Cara ditentukan | Bisa apa |
+| :--- | :--- | :--- |
+| **superadmin** | `users.is_superadmin = true` | Semua tenant, plus CRUD site & user (`/admin/sites`, `/admin/users`) |
+| **site admin / editor** | baris di tabel pivot `site_user` (`role` = `admin`/`editor`) | Hanya tenant yang ter-assign |
+
+* Tanpa token ? `401`.
+* Token valid tapi tidak punya akses ke `X-Site-Key` yang dikirim ? `403`.
+* Endpoint global (`/admin/sites*`, `/admin/users*`) hanya untuk superadmin ? `403` untuk site admin.
+* `X-Site-Key` tidak dikirim / tidak valid pada endpoint tenant ? `400` / `404`.
+
+### 8.3 Peta Endpoint Admin
+
+Semua di bawah prefix `/api/v1/admin` dan butuh `Authorization` + `X-Site-Key` (kecuali grup **Sites/Users** yang superadmin-only, tanpa `X-Site-Key`).
+
+| Grup | Endpoint | Fungsi |
+| :--- | :--- | :--- |
+| **Settings** | `GET/POST /settings` | Baca & bulk-upsert key-value (group: general, contact, social, seo) |
+| **Pages** | `GET/POST /pages`, `GET/PUT/DELETE /pages/{id}` | CRUD halaman |
+| | `POST /pages/{pageId}/sections`, `PUT/DELETE /sections/{id}` | CRUD section (hero, visi-misi, cta) |
+| **Services** | `GET/POST /service-types`, `PUT/DELETE /service-types/{id}` | CRUD master tipe layanan |
+| | `GET/POST /services`, `GET/PUT/DELETE /services/{id}` | CRUD layanan/produk + upload icon & thumbnail |
+| **Portfolios** | `GET/POST /portfolios`, `GET/PUT/DELETE /portfolios/{id}` | CRUD portofolio + thumbnail + gallery |
+| **Articles** | `GET/POST /article-categories`, `PUT/DELETE /article-categories/{id}` | CRUD kategori artikel |
+| | `GET/POST /articles`, `GET/PUT/DELETE /articles/{id}` | CRUD artikel (draft/published/archived) |
+| **FAQs** | `GET/POST /faq-categories`, `PUT/DELETE /faq-categories/{id}` | CRUD kategori FAQ |
+| | `GET/POST /faqs`, `PUT/DELETE /faqs/{id}` | CRUD FAQ |
+| **Showcase** | `GET/POST /testimonials`, `PUT/DELETE /testimonials/{id}` | CRUD testimoni + rating 1–5 |
+| | `GET/POST /partners`, `PUT/DELETE /partners/{id}` | CRUD partner + logo |
+| **Inquiries** | `GET /inquiries?status=`, `GET /inquiries/{id}` | Inbox pesan masuk |
+| | `PATCH /inquiries/{id}/status` | Ubah status (`new`/`contacted`/`closed`) + catatan internal |
+| | `DELETE /inquiries/{id}` | Hapus pesan |
+| **Sites** *(superadmin)* | `GET/POST /sites`, `PUT/DELETE /sites/{id}` | CRUD unit usaha; hapus ditolak `422` bila masih ada konten |
+| **Users** *(superadmin)* | `GET/POST /users`, `PUT /users/{id}` | CRUD user admin |
+| | `POST /sites/{siteId}/users`, `DELETE /sites/{siteId}/users/{userId}` | Assign/lepas user ke site + role |
+
+### 8.4 Upload File & Batas Ukuran
+
+* Batas **10 MB per file** (`max:10240`) untuk seluruh upload: gambar section, icon, thumbnail, gallery, avatar testimoni, logo partner, dan lampiran inquiry.
+* Field yang berisi file **wajib** dikirim sebagai `multipart/form-data`; jangan set header `Content-Type` manual di browser (biarkan boundary otomatis).
+* Saat request berisi file, jangan kirim `Content-Type: application/json` — gunakan `FormData`.
+* Semua path file yang tersimpan dikembalikan sebagai URL absolut (`.../storage/...`), jadi frontend tidak perlu menyusun URL sendiri.
+
+### 8.5 Helper Admin di Next.js
+
+```typescript
+// lib/adminApi.ts — khusus dashboard admin, tidak dipakai landing page publik
+const API = process.env.NEXT_PUBLIC_API_URL!;
+
+export async function adminFetch<T>(
+  path: string,
+  init: RequestInit & { siteKey?: string } = {}
+): Promise<T> {
+  const { siteKey, ...rest } = init;
+  const res = await fetch(`${API}${path}`, {
+    ...rest,
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${getToken()}`,
+      ...(siteKey ? { 'X-Site-Key': siteKey } : {}),
+      ...(rest.body instanceof FormData ? {} : { 'Content-Type': 'application/json' }),
+      ...rest.headers,
+    },
+    cache: 'no-store', // dashboard tidak boleh pakai ISR cache
+  });
+
+  const json = await res.json();
+  if (!res.ok) throw { status: res.status, ...json };
+  return json.data;
+}
+
+export function getToken() { /* baca dari httpOnly cookie di server, atau memory store */ }
+```
+
+Catatan penting: **landing page publik memakai `revalidate` (ISR)** di `lib/api.ts`, sedangkan **dashboard admin wajib `cache: 'no-store'`** agar perubahan konten langsung terlihat.
+
+### 8.6 Setelah Admin Simpan Konten
+
+Karena halaman publik memakai ISR, perubahan dari admin paling cepat terlihat setelah `revalidate` habis (60 detik di contoh `lib/api.ts`). Kalau perlu instan, panggil revalidasi di server action Next.js setelah request admin sukses:
+
+```typescript
+import { revalidatePath } from 'next/cache';
+// setelah POST/PUT berhasil:
+revalidatePath('/', 'layout');
+```

@@ -75,6 +75,36 @@ Semua endpoint wajib menyertakan header `X-Site-Key: <api_key|slug>`:
 | `/api/v1/partners` | `GET` | List logo partner/klien |
 | `/api/v1/inquiries` | `POST` | Kirim pesan kontak / permintaan penawaran (dukung upload lampiran maks 10MB) |
 
+### 5.1 Autentikasi Admin
+
+Semua endpoint `/api/v1/admin/*` membutuhkan header `Authorization: Bearer <token>` (Sanctum) dan `X-Site-Key` (kecuali grup Sites/Users yang superadmin-only).
+
+| Endpoint | Method | Fungsi |
+| :--- | :--- | :--- |
+| `/api/v1/auth/login` | `POST` | Login admin, mengembalikan token |
+| `/api/v1/auth/me` | `GET` | Profil admin yang sedang login |
+| `/api/v1/auth/logout` | `POST` | Revoke token aktif |
+
+### 5.2 Endpoint Admin CMS
+
+| Grup | Endpoint | Fungsi |
+| :--- | :--- | :--- |
+| Settings | `GET/POST /api/v1/admin/settings` | Baca & bulk-upsert setting (grouped) |
+| Pages | `GET/POST /api/v1/admin/pages`, `GET/PUT/DELETE /api/v1/admin/pages/{id}` | CRUD halaman |
+| Sections | `POST /api/v1/admin/pages/{pageId}/sections`, `PUT/DELETE /api/v1/admin/sections/{id}` | CRUD section (upload gambar) |
+| Service Types | `GET/POST /api/v1/admin/service-types`, `PUT/DELETE /api/v1/admin/service-types/{id}` | Master tipe layanan |
+| Services | `GET/POST /api/v1/admin/services`, `GET/PUT/DELETE /api/v1/admin/services/{id}` | CRUD layanan + icon & thumbnail |
+| Portfolios | `GET/POST /api/v1/admin/portfolios`, `GET/PUT/DELETE /api/v1/admin/portfolios/{id}` | CRUD portofolio + gallery |
+| Article Categories | `GET/POST /api/v1/admin/article-categories`, `PUT/DELETE /api/v1/admin/article-categories/{id}` | Master kategori artikel |
+| Articles | `GET/POST /api/v1/admin/articles`, `GET/PUT/DELETE /api/v1/admin/articles/{id}` | CRUD artikel (draft/published/archived) |
+| FAQ Categories | `GET/POST /api/v1/admin/faq-categories`, `PUT/DELETE /api/v1/admin/faq-categories/{id}` | Master kategori FAQ |
+| FAQs | `GET/POST /api/v1/admin/faqs`, `PUT/DELETE /api/v1/admin/faqs/{id}` | CRUD FAQ |
+| Testimonials | `GET/POST /api/v1/admin/testimonials`, `PUT/DELETE /api/v1/admin/testimonials/{id}` | CRUD testimoni |
+| Partners | `GET/POST /api/v1/admin/partners`, `PUT/DELETE /api/v1/admin/partners/{id}` | CRUD partner + logo |
+| Inquiries | `GET /api/v1/admin/inquiries?status=`, `GET/DELETE /api/v1/admin/inquiries/{id}`, `PATCH /api/v1/admin/inquiries/{id}/status` | Inbox & status inquiry |
+| Sites *(superadmin)* | `GET/POST /api/v1/admin/sites`, `PUT/DELETE /api/v1/admin/sites/{id}` | CRUD unit usaha |
+| Users *(superadmin)* | `GET/POST /api/v1/admin/users`, `PUT /api/v1/admin/users/{id}`, `POST/DELETE /api/v1/admin/sites/{siteId}/users[/{userId}]` | CRUD user & assignment role per site |
+
 ---
 
 ## 6. Konfigurasi Upload Max Filesize di Server (VPS Tencent Cloud)
@@ -105,4 +135,4 @@ server {
 ```bash
 php artisan test
 ```
-Seluruh 14 test suite (114 assertions) menguji isolasi tenancy, validasi header `X-Site-Key`, CRUD query scope, validasi form inquiries & upload file, serta route Swagger UI.
+Seluruh 23 test (152 assertions) menguji isolasi tenancy, validasi header `X-Site-Key`, CRUD query scope, validasi form inquiries & upload file, serta route Swagger UI.
