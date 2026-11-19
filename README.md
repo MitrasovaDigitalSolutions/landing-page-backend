@@ -73,6 +73,8 @@ Semua endpoint wajib menyertakan header `X-Site-Key: <api_key|slug>`:
 | `/api/v1/faqs` | `GET` | List FAQ dan kategorinya |
 | `/api/v1/testimonials` | `GET` | List testimoni/ulasan nasabah/klien |
 | `/api/v1/partners` | `GET` | List logo partner/klien |
+| `/api/v1/branches` | `GET` | List kantor pusat & cabang (`image_urls` siap pakai, kantor pusat di atas) |
+| `/api/v1/business-units` | `GET` | List unit usaha (`url` = link redirect ke landing page unit terkait) |
 | `/api/v1/inquiries` | `POST` | Kirim pesan kontak / permintaan penawaran (dukung upload lampiran maks 10MB) |
 
 ### 5.1 Autentikasi Admin
@@ -101,6 +103,8 @@ Semua endpoint `/api/v1/admin/*` membutuhkan header `Authorization: Bearer <toke
 | FAQs | `GET/POST /api/v1/admin/faqs`, `PUT/DELETE /api/v1/admin/faqs/{id}` | CRUD FAQ |
 | Testimonials | `GET/POST /api/v1/admin/testimonials`, `PUT/DELETE /api/v1/admin/testimonials/{id}` | CRUD testimoni |
 | Partners | `GET/POST /api/v1/admin/partners`, `PUT/DELETE /api/v1/admin/partners/{id}` | CRUD partner + logo |
+| Branches | `GET/POST /api/v1/admin/branches`, `PUT/DELETE /api/v1/admin/branches/{id}` | CRUD kantor pusat/cabang + foto (multi upload) |
+| Business Units | `GET/POST /api/v1/admin/business-units`, `PUT/DELETE /api/v1/admin/business-units/{id}` | CRUD unit usaha + `url` redirect |
 | Inquiries | `GET /api/v1/admin/inquiries?status=`, `GET/DELETE /api/v1/admin/inquiries/{id}`, `PATCH /api/v1/admin/inquiries/{id}/status` | Inbox & status inquiry |
 | Sites *(superadmin)* | `GET/POST /api/v1/admin/sites`, `PUT/DELETE /api/v1/admin/sites/{id}` | CRUD unit usaha |
 | Users *(superadmin)* | `GET/POST /api/v1/admin/users`, `PUT /api/v1/admin/users/{id}`, `POST/DELETE /api/v1/admin/sites/{siteId}/users[/{userId}]` | CRUD user & assignment role per site |

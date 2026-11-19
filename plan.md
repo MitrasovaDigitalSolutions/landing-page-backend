@@ -485,3 +485,86 @@ import { revalidatePath } from 'next/cache';
 // setelah POST/PUT berhasil:
 revalidatePath('/', 'layout');
 ```
+
+---
+
+## 9. Konten KSP Mitra Sejati Persada (hasil migrasi situs lama)
+
+Konten tenant `ksp` sudah bukan dummy lagi — diimpor dari `kspmitrasejatipersada.my.id` lewat perintah `php artisan cms:import-ksp` (idempotent, aman dijalankan ulang; tambahkan `--keep-extra` kalau tidak ingin konten dummy dihapus).
+
+### 9.1 Dua endpoint baru (wajib dipakai halaman Cabang & Unit Usaha)
+
+```http
+GET /api/v1/branches           X-Site-Key: ksp
+GET /api/v1/business-units     X-Site-Key: ksp
+```
+
+`GET /branches` ? kantor pusat selalu paling atas, lalu cabang berurutan:
+
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": 1,
+      "name": "Kantor Pusat",
+      "address": "Jl. Batujamus-Karanganyar Km.01, Plosorejo RT.02 RW.02, Kuto, Kerjo, Karanganyar",
+      "phone": "(0271)-6493247",
+      "is_primary": true,
+      "images": ["branches/ksp/kantorpusat-C3OBD9Ew.webp"],
+      "image_urls": ["http://43.157.197.42:8088/storage/branches/ksp/kantorpusat-C3OBD9Ew.webp"],
+      "order": 0
+    }
+  ]
+}
+```
+
+Pakai `image_urls` (sudah URL absolut) — jangan menyusun URL sendiri dari `images`.
+
+`GET /business-units` ? 6 unit usaha. Field `url` dipakai untuk redirect:
+
+```json
+{
+  "id": 1,
+  "name": "Mitra Sejati Trans",
+  "address": "Jl. Batujamus - Jambangan Km. 2, ... · 081329703060",
+  "image_path": "business-units/ksp/mst-Cpk5JyTC.jpeg",
+  "image_url": "http://43.157.197.42:8088/storage/business-units/ksp/mst-Cpk5JyTC.jpeg",
+  "url": "https://trans.mitrasova.com",
+  "order": 0
+}
+```
+
+* `url` diambil dari `sites.domain` unit terkait, jadi begitu domain asli dipasang (superadmin: `PUT /api/v1/admin/sites/{id}` dengan `domain`), link ikut berubah tanpa deploy.
+* `url` bisa `null` (contoh: Mitra Sejati Grosir belum punya site) ? render kartu tanpa link / non-aktif.
+* Kalau mau link eksternal, bisa di-override per unit lewat `PUT /api/v1/admin/business-units/{id}`.
+
+### 9.2 Data yang sekarang ada di tenant `ksp`
+
+| Sumber | Endpoint | Isi |
+| :--- | :--- | :--- |
+| 2 tipe layanan, 7 produk | `/service-types`, `/services` | Simpanan (5: Pendidikan, Pendidikan Berjangka, Terpimpin, Mitra, Berjangka) & Pinjaman (2: Flat, Menurun). Semua syarat ada di `features[]` |
+| 8 kantor | `/branches` | Kantor Pusat + 7 cabang (Kerjo, Mojogedang, Jambangan, Tasikmadu, Matesih, Jumapolo, Jatipuro) + foto |
+| 6 unit usaha | `/business-units` | Trans, Grosir MSG, Percetakan, Estetika, Digital Solutions, Konveksi MISET |
+| 8 halaman | `/pages/{slug}` | `home`, `profil`, `produk`, `cabang`, `unit-usaha`, `karir`, `berita`, `kontak` |
+| Kontak & identitas | `/settings` | WA 6282247170756, telp (0271)-6493247, email ksumitrasejati2005@gmail.com, alamat Karanganyar, IG @kspmspersada, `general.logo_url` |
+
+### 9.3 Struktur `page_sections.payload` untuk KSP
+
+| Page | Section `key` | Isi payload |
+| :--- | :--- | :--- |
+| `home` | `hero` | `slides[]` (title, description, badge, image_path) + `stats[]` (label, value) |
+| `home` | `about` | `pillars[]` (title, description) |
+| `home` | `cta` | teks saja |
+| `profil` | `hero`, `sejarah` (body 3 paragraf), `visi-misi` (`visi` + `misi[]`), `program` (`items[]` dengan `desc1`/`desc2`) | |
+| `produk`, `cabang`, `unit-usaha`, `karir`, `berita`, `kontak` | `hero` (+ `cabang.hero.stats`, `karir.hero.image_path`, `karir.values.items[]`, `berita.instagram.posts[]`) | |
+
+Catatan: `image_path` di dalam `payload` masih **path relatif** (contoh `hero/ksp/slide-1.webp`) — frontend cukup prefix `${NEXT_PUBLIC_API_URL}/storage/`.
+
+### 9.4 Setelah migrate
+
+```bash
+php artisan cms:import-ksp     # jalankan sekali setelah container baru naik
+```
+
+Migration tabel baru (`branches`, `business_units`) jalan otomatis lewat entrypoint.

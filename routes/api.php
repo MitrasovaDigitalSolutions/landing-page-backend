@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\V1\Admin\AdminArticleController;
+use App\Http\Controllers\Api\V1\Admin\AdminBranchController;
+use App\Http\Controllers\Api\V1\Admin\AdminBusinessUnitController;
 use App\Http\Controllers\Api\V1\Admin\AdminFaqController;
 use App\Http\Controllers\Api\V1\Admin\AdminInquiryController;
 use App\Http\Controllers\Api\V1\Admin\AdminMiscController;
@@ -11,6 +13,8 @@ use App\Http\Controllers\Api\V1\Admin\AdminSiteSettingController;
 use App\Http\Controllers\Api\V1\Admin\AdminSuperController;
 use App\Http\Controllers\Api\V1\ArticleController;
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\BranchController;
+use App\Http\Controllers\Api\V1\BusinessUnitController;
 use App\Http\Controllers\Api\V1\FaqController;
 use App\Http\Controllers\Api\V1\InquiryController;
 use App\Http\Controllers\Api\V1\PageController;
@@ -47,6 +51,8 @@ Route::prefix('v1')->group(function () {
         Route::get('/faqs', [FaqController::class, 'index']);
         Route::get('/testimonials', [TestimonialController::class, 'index']);
         Route::get('/partners', [PartnerController::class, 'index']);
+        Route::get('/branches', [BranchController::class, 'index']);
+        Route::get('/business-units', [BusinessUnitController::class, 'index']);
         Route::post('/inquiries', [InquiryController::class, 'store']);
     });
 
@@ -132,6 +138,17 @@ Route::prefix('v1')->group(function () {
         Route::post('/partners', [AdminMiscController::class, 'storePartner']);
         Route::put('/partners/{id}', [AdminMiscController::class, 'updatePartner']);
         Route::delete('/partners/{id}', [AdminMiscController::class, 'destroyPartner']);
+
+        // Branches & Business Units
+        Route::get('/branches', [AdminBranchController::class, 'index']);
+        Route::post('/branches', [AdminBranchController::class, 'store']);
+        Route::put('/branches/{id}', [AdminBranchController::class, 'update']);
+        Route::delete('/branches/{id}', [AdminBranchController::class, 'destroy']);
+
+        Route::get('/business-units', [AdminBusinessUnitController::class, 'index']);
+        Route::post('/business-units', [AdminBusinessUnitController::class, 'store']);
+        Route::put('/business-units/{id}', [AdminBusinessUnitController::class, 'update']);
+        Route::delete('/business-units/{id}', [AdminBusinessUnitController::class, 'destroy']);
 
         // Inquiries (Inbox)
         Route::get('/inquiries', [AdminInquiryController::class, 'index']);

@@ -255,4 +255,44 @@ class AdminApiTest extends TestCase
             ->deleteJson("/api/v1/admin/sites/{$emptySiteId}")
             ->assertStatus(200);
     }
+
+    public function test_admin_branches_and_business_units_crud(): void
+    {
+        $token = $this->superadminToken();
+        $headers = ['Authorization' => 'Bearer ' . $token, 'X-Site-Key' => 'ksp'];
+
+        $branchId = $this->withHeaders($headers)
+            ->post('/api/v1/admin/branches', [
+                'name' => 'Kantor Cabang Kerjo',
+                'address' => 'Jl. Batujamus-Karanganyar Km.01, Bangunsari',
+                'phone' => '(0271)-6493168',
+                'is_primary' => true,
+                'images' => [\Illuminate\Http\UploadedFile::fake()->image('kantor.jpg', 200, 150)],
+            ], ['Accept' => 'application/json'])
+            ->assertStatus(201)
+            ->assertJsonPath('data.name', 'Kantor Cabang Kerjo')
+            ->json('data.id');
+
+        $this->withHeaders($headers)
+            ->putJson("/api/v1/admin/branches/{$branchId}", ['phone' => '(0271)-1111111'])
+            ->assertStatus(200)
+            ->assertJsonPath('data.phone', '(0271)-1111111');
+
+        $unitId = $this->withHeaders($headers)
+            ->post('/api/v1/admin/business-units', [
+                'name' => 'Mitra Sejati Percetakan',
+                'address' => 'Jl. Jambangan - Grompol Km. 1',
+                'image' => \Illuminate\Http\UploadedFile::fake()->image('unit.jpg', 200, 150),
+            ], ['Accept' => 'application/json'])
+            ->assertStatus(201)
+            ->json('data.id');
+
+        $this->withHeaders($headers)
+            ->deleteJson("/api/v1/admin/business-units/{$unitId}")
+            ->assertStatus(200);
+
+        $this->withHeaders($headers)
+            ->deleteJson("/api/v1/admin/branches/{$branchId}")
+            ->assertStatus(200);
+    }
 }

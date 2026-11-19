@@ -243,4 +243,41 @@ class TenantApiTest extends TestCase
         $spec->assertStatus(200)
             ->assertHeader('Content-Type', 'application/json');
     }
+
+    public function test_branches_and_business_units_public_endpoints(): void
+    {
+        $site = \App\Models\Site::where('slug', 'ksp')->first();
+
+        \App\Models\Branch::create([
+            'site_id' => $site->id,
+            'name' => 'Kantor Pusat',
+            'address' => 'Jl. Batujamus-Karanganyar Km.01',
+            'phone' => '(0271)-6493247',
+            'is_primary' => true,
+            'images' => ['branches/ksp/kantorpusat.webp'],
+            'order' => 0,
+        ]);
+
+        \App\Models\BusinessUnit::create([
+            'site_id' => $site->id,
+            'name' => 'Mitra Sejati Trans',
+            'address' => 'Jl. Batujamus - Jambangan Km. 2',
+            'image_path' => 'business-units/ksp/mst.jpeg',
+            'order' => 0,
+        ]);
+
+        $branches = $this->withHeader('X-Site-Key', 'key-ksp-12345')->getJson('/api/v1/branches');
+        $branches->assertStatus(200)
+            ->assertJsonPath('data.0.name', 'Kantor Pusat')
+            ->assertJsonPath('data.0.is_primary', true)
+            ->assertJsonCount(1, 'data.0.image_urls');
+
+        $units = $this->withHeader('X-Site-Key', 'key-ksp-12345')->getJson('/api/v1/business-units');
+        $units->assertStatus(200)
+            ->assertJsonPath('data.0.name', 'Mitra Sejati Trans');
+
+        // tenant isolation: konveksi does not see ksp branches
+        $other = $this->withHeader('X-Site-Key', 'key-konveksi-12345')->getJson('/api/v1/branches');
+        $other->assertStatus(200)->assertJsonCount(0, 'data');
+    }
 }

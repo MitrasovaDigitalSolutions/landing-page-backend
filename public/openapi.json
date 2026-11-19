@@ -4184,6 +4184,481 @@
                     }
                 ]
             }
+        },
+        "/api/v1/branches": {
+            "get": {
+                "tags": [
+                    "Cabang"
+                ],
+                "summary": "Daftar kantor pusat & cabang",
+                "description": "Diurutkan dengan kantor pusat lebih dulu. Setiap cabang menyertakan image_urls (URL absolut).",
+                "security": [
+                    {
+                        "SiteKey": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Berhasil",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BranchesResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/MissingSiteKey"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/SiteNotFound"
+                    }
+                }
+            }
+        },
+        "/api/v1/business-units": {
+            "get": {
+                "tags": [
+                    "Unit Usaha"
+                ],
+                "summary": "Daftar unit usaha",
+                "security": [
+                    {
+                        "SiteKey": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Berhasil",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BusinessUnitsResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/MissingSiteKey"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/SiteNotFound"
+                    }
+                }
+            }
+        },
+        "/api/v1/admin/branches": {
+            "get": {
+                "tags": [
+                    "Admin - Branches"
+                ],
+                "summary": "Daftar cabang",
+                "security": [
+                    {
+                        "SiteKey": [],
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": [
+                    {
+                        "description": "Berhasil",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BranchesResponse"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#/components/responses/MissingSiteKey"
+                    },
+                    {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    {
+                        "$ref": "#/components/responses/SiteNotFound"
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Admin - Branches"
+                ],
+                "summary": "Buat cabang (dukung upload banyak foto)",
+                "security": [
+                    {
+                        "SiteKey": [],
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BranchInput"
+                            }
+                        }
+                    }
+                },
+                "responses": [
+                    {
+                        "description": "Data berhasil dibuat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AdminMessageResponse"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#/components/responses/MissingSiteKey"
+                    },
+                    {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    {
+                        "$ref": "#/components/responses/SiteNotFound"
+                    },
+                    {
+                        "description": "Validasi gagal",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/branches/{id}": {
+            "put": {
+                "tags": [
+                    "Admin - Branches"
+                ],
+                "summary": "Update cabang (kirim images untuk mengganti semua foto)",
+                "security": [
+                    {
+                        "SiteKey": [],
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BranchInput"
+                            }
+                        }
+                    }
+                },
+                "responses": [
+                    {
+                        "description": "Berhasil",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AdminMessageResponse"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#/components/responses/MissingSiteKey"
+                    },
+                    {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    {
+                        "$ref": "#/components/responses/SiteNotFound"
+                    },
+                    {
+                        "description": "Validasi gagal",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Admin - Branches"
+                ],
+                "summary": "Hapus cabang",
+                "security": [
+                    {
+                        "SiteKey": [],
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": [
+                    {
+                        "description": "Berhasil",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AdminMessageResponse"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#/components/responses/MissingSiteKey"
+                    },
+                    {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    {
+                        "$ref": "#/components/responses/SiteNotFound"
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/business-units": {
+            "get": {
+                "tags": [
+                    "Admin - Business Units"
+                ],
+                "summary": "Daftar unit usaha",
+                "security": [
+                    {
+                        "SiteKey": [],
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": [
+                    {
+                        "description": "Berhasil",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BusinessUnitsResponse"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#/components/responses/MissingSiteKey"
+                    },
+                    {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    {
+                        "$ref": "#/components/responses/SiteNotFound"
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Admin - Business Units"
+                ],
+                "summary": "Buat unit usaha",
+                "security": [
+                    {
+                        "SiteKey": [],
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BusinessUnitInput"
+                            }
+                        }
+                    }
+                },
+                "responses": [
+                    {
+                        "description": "Data berhasil dibuat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AdminMessageResponse"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#/components/responses/MissingSiteKey"
+                    },
+                    {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    {
+                        "$ref": "#/components/responses/SiteNotFound"
+                    },
+                    {
+                        "description": "Validasi gagal",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/business-units/{id}": {
+            "put": {
+                "tags": [
+                    "Admin - Business Units"
+                ],
+                "summary": "Update unit usaha",
+                "security": [
+                    {
+                        "SiteKey": [],
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BusinessUnitInput"
+                            }
+                        }
+                    }
+                },
+                "responses": [
+                    {
+                        "description": "Berhasil",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AdminMessageResponse"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#/components/responses/MissingSiteKey"
+                    },
+                    {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    {
+                        "$ref": "#/components/responses/SiteNotFound"
+                    },
+                    {
+                        "description": "Validasi gagal",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Admin - Business Units"
+                ],
+                "summary": "Hapus unit usaha",
+                "security": [
+                    {
+                        "SiteKey": [],
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": [
+                    {
+                        "description": "Berhasil",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AdminMessageResponse"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#/components/responses/MissingSiteKey"
+                    },
+                    {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    {
+                        "$ref": "#/components/responses/SiteNotFound"
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -5917,6 +6392,188 @@
                         "example": "admin"
                     }
                 }
+            },
+            "Branch": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 150,
+                        "example": "Kantor Pusat"
+                    },
+                    "address": {
+                        "type": "string",
+                        "example": "Jl. Batujamus-Karanganyar Km.01, Plosorejo RT.02 RW.02, Kuto, Kerjo, Karanganyar"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "maxLength": 40,
+                        "example": "(0271)-6493247"
+                    },
+                    "is_primary": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "images": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Path relatif file gambar"
+                    },
+                    "image_urls": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "uri"
+                        },
+                        "description": "URL absolut siap pakai untuk <img src>"
+                    },
+                    "order": {
+                        "type": "integer",
+                        "example": 0
+                    }
+                }
+            },
+            "BusinessUnit": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 150,
+                        "example": "Mitra Sejati Trans"
+                    },
+                    "address": {
+                        "type": "string",
+                        "example": "Jl. Batujamus - Jambangan Km. 2, Gempol, Mojodoyong, Kedawung, Sragen"
+                    },
+                    "image_path": {
+                        "type": "string",
+                        "example": "business-units/ksp/mst.jpeg"
+                    },
+                    "image_url": {
+                        "type": "string",
+                        "format": "uri",
+                        "nullable": true
+                    },
+                    "url": {
+                        "type": "string",
+                        "format": "uri",
+                        "nullable": true
+                    },
+                    "order": {
+                        "type": "integer",
+                        "example": 0
+                    }
+                }
+            },
+            "BranchesResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Branch"
+                        }
+                    }
+                }
+            },
+            "BusinessUnitsResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/BusinessUnit"
+                        }
+                    }
+                }
+            },
+            "BranchInput": {
+                "type": "object",
+                "required": [
+                    "name",
+                    "address"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "maxLength": 150,
+                        "example": "Kantor Cabang Kerjo"
+                    },
+                    "address": {
+                        "type": "string",
+                        "example": "Jl. Batujamus-Karanganyar Km.01, Bangunsari"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "maxLength": 40,
+                        "example": "(0271)-6493168"
+                    },
+                    "is_primary": {
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "order": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "images": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "binary"
+                        },
+                        "description": "Maks 10MB per file (jpg, png, webp)"
+                    }
+                }
+            },
+            "BusinessUnitInput": {
+                "type": "object",
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "maxLength": 150,
+                        "example": "Mitra Sejati Percetakan"
+                    },
+                    "address": {
+                        "type": "string",
+                        "example": "Jl. Jambangan - Grompol Km. 1"
+                    },
+                    "url": {
+                        "type": "string",
+                        "format": "uri",
+                        "nullable": true
+                    },
+                    "order": {
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "image": {
+                        "type": "string",
+                        "format": "binary",
+                        "description": "Maks 10MB (jpg, png, webp)"
+                    }
+                }
             }
         }
     },
@@ -5964,6 +6621,22 @@
         {
             "name": "Admin - Users",
             "description": "Manajemen admin & role per site (superadmin)"
+        },
+        {
+            "name": "Cabang",
+            "description": "Kantor pusat & cabang (read-only)"
+        },
+        {
+            "name": "Unit Usaha",
+            "description": "Unit usaha grup (read-only)"
+        },
+        {
+            "name": "Admin - Branches",
+            "description": "Kelola kantor pusat & cabang"
+        },
+        {
+            "name": "Admin - Business Units",
+            "description": "Kelola unit usaha"
         }
     ]
 }
