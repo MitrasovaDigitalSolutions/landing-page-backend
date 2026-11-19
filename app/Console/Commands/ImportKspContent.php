@@ -511,7 +511,7 @@ class ImportKspContent extends Command
                     [
                         'title' => $title,
                         'body' => $body,
-                        'payload' => $payload,
+                        'payload' => $this->withImageUrls($payload),
                         'order' => $index,
                     ]
                 );
@@ -525,9 +525,30 @@ class ImportKspContent extends Command
     }
 
     /**
-     * Removes the generic demo content seeded for KSP (the real site has none of these).
+     * payload gambar disimpan sebagai path relatif; tambahkan image_url absolut agar frontend tidak menyusun URL sendiri.
      */
-    private function purgeDummy(Site $site): void
+    private function withImageUrls(?array $payload): ?array
+    {
+        if (!is_array($payload)) {
+            return $payload;
+        }
+
+        foreach ($payload as $key => $value) {
+            if (is_array($value)) {
+                $payload[$key] = $this->withImageUrls($value);
+            } elseif ($key === 'image_path' && is_string($value) && $value !== '') {
+                $payload['image_url'] = str_starts_with($value, 'http')
+                    ? $value
+                    : url('storage/' . ltrim($value, '/'));
+            }
+        }
+
+        return $payload;
+    }
+
+    /**
+     * Removes the generic demo content seeded for KSP (the real site has none of these).
+     */    private function purgeDummy(Site $site): void
     {
         $counts = [
             'portfolios' => Portfolio::where('site_id', $site->id)->delete(),
