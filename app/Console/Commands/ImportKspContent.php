@@ -186,6 +186,7 @@ class ImportKspContent extends Command
         ];
 
         $serviceOrder = 0;
+        $importedSlugs = [];
 
         foreach ($types as $typeIndex => $typeData) {
             $type = ServiceType::updateOrCreate(
@@ -212,8 +213,16 @@ class ImportKspContent extends Command
                         'order' => $serviceOrder++,
                     ]
                 );
+
+                $importedSlugs[] = $serviceData['slug'];
             }
         }
+
+        // buang layanan & tipe layanan lama yang bukan bagian dari data asli KSP
+        Service::where('site_id', $site->id)->whereNotIn('slug', $importedSlugs)->delete();
+        ServiceType::where('site_id', $site->id)
+            ->whereNotIn('slug', array_map(fn ($t) => $t['slug'], $types))
+            ->delete();
 
         $this->line('  service types: ' . count($types) . ', services: ' . $serviceOrder);
     }
