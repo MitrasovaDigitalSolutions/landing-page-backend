@@ -6464,6 +6464,21 @@
                         "format": "uri",
                         "nullable": true
                     },
+                    "images": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Path galeri gambar (carousel)"
+                    },
+                    "image_urls": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "uri"
+                        },
+                        "description": "URL absolut galeri gambar"
+                    },
                     "url": {
                         "type": "string",
                         "format": "uri",
@@ -6572,6 +6587,14 @@
                         "type": "string",
                         "format": "binary",
                         "description": "Maks 10MB (jpg, png, webp)"
+                    },
+                    "images": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "binary"
+                        },
+                        "description": "Galeri gambar (carousel). Maks 10MB per file (jpg, png, webp)"
                     }
                 }
             }

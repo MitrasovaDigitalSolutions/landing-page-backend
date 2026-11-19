@@ -75,9 +75,10 @@ class ImportKspContent extends Command
             ['contact', 'whatsapp', '6282247170756'],
             ['contact', 'email', 'ksumitrasejati2005@gmail.com'],
             ['contact', 'address', 'Jl. Batujamus-Karanganyar Km.01, Plosorejo RT.02 RW.02, Kuto, Kerjo, Karanganyar'],
-            ['contact', 'maps_embed', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1045.89633758876!2d111.04970945900324!3d-7.544823098299865!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1'],
+            ['contact', 'maps_embed', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1045.89633758876!2d111.04970945900324!3d-7.544823098299865!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a1e59b0e59853%3A0x89fcb614126ddb31!2sKSU%20Mitra%20Sejati!5e0!3m2!1sid!2sid!4v1780455411004!5m2!1sid!2sid'],
             ['social', 'instagram', 'https://instagram.com/kspmspersada'],
             ['legal', 'badan_hukum', 'AHU-0003640.AH.38.TAHUN 2025'],
+            ['legal', 'copyright', '© 2026 KSP Mitra Sejati Persada. Seluruh hak cipta dilindungi.'],
         ];
 
         foreach ($settings as [$group, $key, $value]) {
@@ -104,10 +105,10 @@ class ImportKspContent extends Command
                         'slug' => 'simpanan-pendidikan',
                         'short_desc' => 'Simpanan untuk biaya pendidikan putra/putri anggota.',
                         'features' => [
-                            'Simpanan dilokasikan untuk pendidikan putra/putri Anda dan mempermudah mengatur biaya pendidikan',
-                            'Pembukaan rekening dengan setoran awal minimal Rp 10.000,- dan selanjutnya minimal Rp 5.000,-',
-                            'Pengambilan simpanan dengan saldo minimal yang harus disisihkan Rp 10.000,-',
-                            'Pengambilan atas rekomendasi orang tua/wali',
+                            'Simpanan dilokasikan untuk pendidikan putra / putri anda dan mempermudah memanage biaya pendidikan',
+                            'Pembukaan rekening dengan setoran awal minimal Rp. 10.000,- dan selanjutnya minimal Rp. 5.000',
+                            'Pengambilan simpanan saldo minimal yang harus disisihkan Rp. 10.000',
+                            'Pengambilan atas rekomendasi Orang tua / Wali',
                         ],
                     ],
                     [
@@ -127,10 +128,10 @@ class ImportKspContent extends Command
                         'short_desc' => 'Simpanan yang dapat disetor dan diambil sewaktu-waktu.',
                         'features' => [
                             'Simpanan yang dapat disetor/diambil sewaktu-waktu',
-                            'Pembukaan rekening dengan setoran awal minimal Rp 10.000,- dan selanjutnya minimal Rp 5.000,-',
-                            'Bunga/jasa menarik, bebas pajak & administrasi',
+                            'Pembukaan rekening dengan setoran awal minimal Rp. 10.000,- dan selanjutnya minimal Rp. 5.000',
+                            'Bunga/Jasa menarik, bebas pajak & administrasi',
                             'Bisa diambil/diantar staf marketing kami',
-                            'Undian berhadiah menarik di setiap tahunnya',
+                            'Undian berhadiah menarik disetiap tahunnya',
                         ],
                     ],
                     [
@@ -140,9 +141,9 @@ class ImportKspContent extends Command
                         'features' => [
                             'Simpanan yang dapat disetor/diambil sewaktu-waktu',
                             'Pembukaan rekening dengan setoran awal minimal Rp 50.000,- dan selanjutnya minimal Rp 50.000,-',
-                            'Sistem poin untuk saldo tertentu, semakin besar saldo semakin besar poin yang didapat',
-                            'Undian poin berhadiah menarik setiap 4 bulan',
-                            'Pengambilan simpanan dengan saldo minimal yang harus disisihkan Rp 50.000,-',
+                            'Sistem point untuk saldo tertentu semakin besar saldo semakin besar point yang didapat',
+                            'Undian point berhadiah menarik setiap 4 bulan',
+                            'Pengambilan simpanan saldo minimal yang harus disisihkan Rp. 50.000,-',
                         ],
                     ],
                     [
@@ -151,7 +152,7 @@ class ImportKspContent extends Command
                         'short_desc' => 'Simpanan dengan jangka waktu tertentu, minimal Rp 1.000.000,-.',
                         'features' => [
                             'Simpanan dengan jangka waktu tertentu',
-                            'Jumlah minimal Rp 1.000.000,- (satu juta rupiah)',
+                            'Jumlah minimal Rp. 1.000.000,- (Satu Juta Rupiah)',
                             'Suku bunga/jasa dapat berubah sewaktu-waktu',
                         ],
                     ],
@@ -169,7 +170,7 @@ class ImportKspContent extends Command
                         'short_desc' => 'Pinjaman dengan angsuran tetap, proses mudah dan aman.',
                         'features' => [
                             'Kami melayani pinjaman (pembiayaan) dengan proses mudah dan aman',
-                            'Syarat: foto copy KTP suami istri, Kartu Keluarga, surat/akta nikah, dan foto copy jaminan',
+                            'Syarat: foto copy KTP suami istri, Kartu Keluarga, Surat/akta nikah, dan foto copy Jaminan',
                         ],
                     ],
                     [
@@ -178,7 +179,7 @@ class ImportKspContent extends Command
                         'short_desc' => 'Pinjaman dengan sistem angsuran yang semakin menurun.',
                         'features' => [
                             'Pinjaman dengan sistem angsuran yang semakin menurun',
-                            'Syarat: foto copy KTP suami istri, Kartu Keluarga, surat/akta nikah, dan foto copy jaminan',
+                            'Syarat: foto copy KTP suami istri, Kartu Keluarga, Surat/akta nikah, dan foto copy Jaminan',
                         ],
                     ],
                 ],
@@ -264,27 +265,33 @@ class ImportKspContent extends Command
 
     private function importBusinessUnits(Site $site): void
     {
-        // nama unit, alamat, telepon, gambar, slug site tujuan redirect
+        // nama unit, alamat, telepon, gambar (cover + galeri), slug site tujuan redirect
         $units = [
-            ['Mitra Sejati Trans', 'Jl. Batujamus - Jambangan Km. 2, Gempol, Mojodoyong, Kedawung, Sragen', '081329703060', 'mst-Cpk5JyTC.jpeg', 'transportasi'],
-            ['Mitra Sejati Grosir (MSG)', 'Jl. Batujamus - Jambangan Km. 1 Kutho, Kerjo, Karanganyar', null, 'msg-CLmEP2zB.jpeg', null],
-            ['Mitra Sejati Percetakan', 'Jl. Jambangan - Grompol Km. 1, Jambangan, Pereng, Mojogedang, Karanganyar', '081235102885', 'mspercetakan-BXKGIbc0.jpeg', 'percetakan'],
-            ['Mitra Estetika', 'Jl. Jambangan-Grompol Km.01, Jambangan Rt.13 Rw.01, Pereng, Mojogedang, Karanganyar (Barat Pasar Jambangan ±500m)', '087252750028', 'estetika-BBgZl801.jpeg', 'bengkel-las'],
-            ['Mitra Sejati Digital Solutions', 'Jl. Batujamus-Karanganyar Km.01, Plosorejo RT.02 RW.02, Kuto, Kerjo, Karanganyar', null, 'msds-D9TogTl0.jpeg', 'teknologi'],
-            ['Mitra Sejati Konveksi (MISET)', 'Jl. Jambangan - Grompol Km. 1, Jambangan, Pereng, Mojogedang, Karanganyar', null, 'miset-xANgJkb2.jpeg', 'konveksi'],
+            ['Mitra Sejati Trans', 'Jl. Batujamus - Jambangan Km. 2, Gempol, Mojodoyong, Kedawung, Sragen', '081329703060', ['mst-Cpk5JyTC.jpeg', 'mst1-DoVY92gx.jpg', 'mst2-CSxZoRYj.jpg'], 'transportasi'],
+            ['Mitra Sejati Grosir (MSG)', 'Jl. Batujamus - Jambangan Km. 1 Kutho, Kerjo, Karanganyar', null, ['msg-CLmEP2zB.jpeg', 'msg1-Dxxn3zbu.jpeg', 'msg2-v2CY4C35.jpeg'], null],
+            ['Mitra Sejati Percetakan', 'Jl. Jambangan - Grompol Km. 1, Jambangan, Pereng, Mojogedang, Karanganyar', '081235102885', ['mspercetakan-BXKGIbc0.jpeg', 'mspercetakan1-DwkpTzA7.jpeg', 'mspercetakan2-DyF_q54j.jpeg'], 'percetakan'],
+            ['Mitra Estetika', 'Jl. Jambangan-Grompol Km.01, Jambangan Rt.13 Rw.01, Pereng, Mojogedang, Karanganyar (Barat Pasar Jambangan ±500m)', '087252750028', ['estetika-BBgZl801.jpeg'], 'bengkel-las'],
+            ['Mitra Sejati Digital Solutions', 'Jl. Batujamus-Karanganyar Km.01, Plosorejo RT.02 RW.02, Kuto, Kerjo, Karanganyar', null, ['msds-D9TogTl0.jpeg', 'msds1-DNHoXhYM.png', 'msds2-BifHIE69.png'], 'teknologi'],
+            ['Mitra Sejati Konveksi (MISET)', 'Jl. Jambangan - Grompol Km. 1, Jambangan, Pereng, Mojogedang, Karanganyar', null, ['miset-xANgJkb2.jpeg', 'miset1-CNsmju2x.jpeg', 'miset2-DEsX7yJ1.jpeg'], 'konveksi'],
         ];
 
-        foreach ($units as $index => [$name, $address, $phone, $file, $targetSlug]) {
+        foreach ($units as $index => [$name, $address, $phone, $files, $targetSlug]) {
             // tautan redirect ke landing page unit terkait (null kalau unit belum punya site)
             $targetSite = $targetSlug ? Site::where('slug', $targetSlug)->first() : null;
             $url = $targetSite && $targetSite->domain ? 'https://' . $targetSite->domain : null;
+
+            $images = array_values(array_filter(array_map(
+                fn ($file) => $this->download($file, "business-units/ksp/{$file}"),
+                $files
+            )));
 
             BusinessUnit::updateOrCreate(
                 ['site_id' => $site->id, 'name' => $name],
                 [
                     'address' => $address . ($phone ? ' · ' . $phone : ''),
                     'url' => $url,
-                    'image_path' => $this->download($file, "business-units/ksp/{$file}"),
+                    'image_path' => $images[0] ?? null,
+                    'images' => $images,
                     'order' => $index,
                 ]
             );
@@ -329,20 +336,38 @@ class ImportKspContent extends Command
                             ['label' => 'Wilayah', 'value' => 'Karanganyar'],
                         ],
                     ]],
-                    ['about', 'Koperasi Sebagai Rumah Ekonomi Rakyat', 'KSP Mitra Sejati Persada merupakan koperasi simpan pinjam yang melayani masyarakat Karanganyar sejak 2006 dengan slogan Solusi Kemitraan Anda.', [
-                        'pillars' => [
-                            ['title' => 'Melayani Semua Lapisan, Menyatukan Perbedaan', 'description' => 'Menyediakan layanan simpan pinjam yang mudah diakses, adil, dan disesuaikan dengan kebutuhan nyata setiap anggota dari berbagai latar belakang.'],
-                            ['title' => 'Menjaga Warisan, Mendorong Inovasi', 'description' => 'Menggabungkan semangat gotong royong dan integritas dengan pendekatan modern berbasis teknologi agar tetap relevan dan efisien.'],
-                            ['title' => 'Tumbuh Bersama, Bukan Sendiri', 'description' => 'Menjadikan koperasi bukan hanya tempat transaksi, tetapi ruang kolaborasi ekonomi, saling bantu, dan menginspirasi antar anggota.'],
+                    ['featured', 'Produk Unggulan', 'Solusi simpan pinjam terpercaya untuk memenuhi kebutuhan finansial Anda dan keluarga', [
+                        'badge' => 'Layanan Kami',
+                        'cards' => [
+                            [
+                                'title' => 'Simpanan',
+                                'description' => 'Beragam produk simpanan dengan bunga menarik, bebas administrasi, dan undian berhadiah.',
+                                'products' => ['Simpanan Pendidikan', 'Simpanan Pendidikan Berjangka', 'Simpanan Terpimpin', 'Simpanan Mitra', 'Simpanan Berjangka'],
+                            ],
+                            [
+                                'title' => 'Pinjaman',
+                                'description' => 'Layanan pinjaman mudah, aman, dan transparan dengan syarat yang terjangkau untuk semua.',
+                                'products' => ['Pinjaman Flat (Tetap)', 'Pinjaman Menurun'],
+                                'note' => 'Koperasi Simpan Pinjam terpercaya untuk kebutuhan anggota.',
+                            ],
                         ],
+                        'cta_label' => 'Lihat Detail Semua Produk',
                     ]],
-                    ['cta', 'Butuh Informasi Lebih Lanjut?', 'Tim kami siap membantu Anda memilih produk yang paling sesuai dengan kebutuhan.', null],
+                    ['office', 'Alamat Kantor Pusat', 'Jl. Batujamus-Karanganyar Km.01, Plosorejo RT.02 RW.02, Kuto, Kerjo, Karanganyar', [
+                        'badge' => 'Lokasi',
+                        'maps_embed' => 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1045.89633758876!2d111.04970945900324!3d-7.544823098299865!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a1e59b0e59853%3A0x89fcb614126ddb31!2sKSU%20Mitra%20Sejati!5e0!3m2!1sid!2sid!4v1780455411004!5m2!1sid!2sid',
+                    ]],
                 ],
             ],
             'profil' => [
                 'title' => 'Profil',
                 'sections' => [
-                    ['hero', 'Profil KSP Mitra Sejati Persada', 'Mengenal lebih dekat koperasi simpan pinjam yang melayani masyarakat Karanganyar sejak 2006', null],
+                    ['hero', 'Profil KSP Mitra Sejati Persada', 'Mengenal lebih dekat Koperasi Simpan Pinjam yang melayani masyarakat Karanganyar sejak 2006', [
+                        'badge' => 'Tentang Kami',
+                        'image_path' => $this->download('kantorpusat-C3OBD9Ew.webp', 'hero/ksp/profil.webp'),
+                        'image_label' => 'Kantor Pusat',
+                        'image_caption' => 'Jl. Batujamus-Karanganyar Km.01, Plosorejo, Kuto, Kerjo, Karanganyar',
+                    ]],
                     ['sejarah', 'Sejarah Kami', implode("\n\n", [
                         'KSP Mitra Sejati Persada lahir dari semangat untuk bangkit dari masa sulit. Berawal dari sisa puing-puing keputusasaan kelompok lama, lima kelompok melebur menjadi satu dengan tekad yang sama memperbaiki keadaan dan membangun lembaga yang lebih kuat, sehat, serta bermanfaat bagi anggota dan masyarakat.',
                         'Tanggal 21 Maret 2005 menjadi awal perjalanan KSU Mitra Sejati. Dengan modal awal sebesar Rp18.000.000, sebagian dana digunakan untuk kebutuhan operasional seperti sewa kantor, peralatan kantor, dan seragam karyawan. Dari sisa kas sebesar Rp3.000.000, koperasi ini mulai membuka pelayanan pertamanya. Kantor pertama berdiri di depan Pasar Batujamus, yang kini dikenal sebagai Kantor Kas Kerjo. Dari tempat sederhana inilah kepercayaan mulai dibangun dan pelayanan terus berkembang.',
@@ -358,7 +383,7 @@ class ImportKspContent extends Command
                             ['title' => 'Koperasi Sebagai Rumah Ekonomi Rakyat', 'desc' => 'Menguatkan peran koperasi sebagai pusat pengembangan ekonomi lokal, pendidikan keuangan, dan wadah pemberdayaan berkelanjutan.'],
                         ],
                     ]],
-                    ['program', 'Strategi & Program Kerja', null, [
+                    ['strategi', 'Strategi', null, [
                         'items' => [
                             ['title' => 'Melayani Semua Lapisan, Menyatukan Perbedaan', 'desc1' => 'Mengembangkan produk simpan pinjam yang fleksibel dan sesuai segmen (petani, pedagang, ASN, UMKM, dll).', 'desc2' => 'Menyediakan layanan jemput bola atau digital bagi anggota yang sulit mengakses kantor.'],
                             ['title' => 'Tumbuh Bersama, Bukan Sendiri', 'desc1' => 'Mendorong kolaborasi usaha antar anggota.', 'desc2' => 'Membuka forum diskusi atau pelatihan berkala antar anggota.'],
@@ -367,12 +392,44 @@ class ImportKspContent extends Command
                             ['title' => 'Koperasi Sebagai Rumah Ekonomi Rakyat', 'desc1' => 'Membina dan mendampingi anggota dalam pengembangan usaha.', 'desc2' => 'Menjadi penghubung koperasi dengan lembaga pelatihan, pemerintah, dan komunitas.'],
                         ],
                     ]],
+                    ['program', 'Program Kerja', null, [
+                        'items' => [
+                            ['title' => 'Melayani Semua Lapisan, Menyatukan Perbedaan', 'desc1' => "Program 'Pinjaman Tepat Guna' untuk anggota usaha mikro dan rumah tangga.", 'desc2' => 'Sosialisasi koperasi di komunitas lokal seperti RT/RW, pasar, dan kelompok tani.'],
+                            ['title' => 'Tumbuh Bersama, Bukan Sendiri', 'desc1' => "Kelas bulanan 'Ngopi Bareng Mitra' untuk berbagi pengetahuan usaha dan motivasi.", 'desc2' => "Program 'Pasar Mitra' untuk promosi usaha anggota melalui media koperasi atau event bersama."],
+                            ['title' => 'Menjaga Warisan, Mendorong Inovasi', 'desc1' => 'Digitalisasi pencatatan keuangan dan layanan melalui aplikasi koperasi.', 'desc2' => 'Pelatihan nilai-nilai koperasi bagi anggota baru dan pengurus.'],
+                            ['title' => 'Transparansi adalah Pondasi', 'desc1' => 'Rapat Anggota Tahunan (RAT) interaktif dengan visualisasi data keuangan.', 'desc2' => 'Laporan bulanan melalui WhatsApp Group atau papan informasi koperasi.'],
+                            ['title' => 'Koperasi Sebagai Rumah Ekonomi Rakyat', 'desc1' => "Program 'Sahabat Usaha' untuk pendampingan usaha kecil anggota.", 'desc2' => 'Kerja sama dengan dinas koperasi, UMKM, dan lembaga pelatihan lokal.'],
+                        ],
+                    ]],
                 ],
             ],
             'produk' => [
                 'title' => 'Produk',
                 'sections' => [
-                    ['hero', 'Produk Simpanan & Pinjaman', 'Beragam produk simpanan dan pinjaman untuk memenuhi kebutuhan finansial Anda dan keluarga', null],
+                    ['hero', 'Produk Simpanan & Pinjaman', 'Beragam produk simpanan dan pinjaman untuk memenuhi kebutuhan finansial Anda dan keluarga', [
+                        'slides' => [
+                            [
+                                'title' => 'Tumbuh Bersama, Bukan Sendiri',
+                                'description' => 'Menjadikan koperasi bukan hanya tempat transaksi, tetapi ruang kolaborasi ekonomi, saling bantu, dan menginspirasi antar anggota.',
+                                'image_path' => $this->download('umkm3-BZwoJ7br.webp', 'hero/ksp/produk-1.webp'),
+                            ],
+                            [
+                                'title' => 'Transparansi adalah Pondasi',
+                                'description' => 'Menumbuhkan budaya koperasi yang terbuka, akuntabel, dan bisa dipercaya oleh anggota maupun mitra luar.',
+                                'image_path' => $this->download('umkm4-CLTTzE4p.webp', 'hero/ksp/produk-2.webp'),
+                            ],
+                            [
+                                'title' => 'Koperasi Sebagai Rumah Ekonomi Rakyat',
+                                'description' => 'Menguatkan peran koperasi sebagai pusat pengembangan ekonomi lokal, pendidikan keuangan, dan wadah pemberdayaan berkelanjutan.',
+                                'image_path' => $this->download('umkm5-De2JDTPB.webp', 'hero/ksp/produk-3.webp'),
+                            ],
+                        ],
+                        'cta_label' => 'Hubungi Admin via WhatsApp',
+                    ]],
+                    ['cta', 'Butuh Informasi Lebih Lanjut?', 'Tim kami siap membantu Anda memilih produk yang paling sesuai dengan kebutuhan', [
+                        'button_label' => 'Hubungi Admin via WhatsApp',
+                        'button_url' => 'https://wa.me/6282247170756?text=Halo%20Admin%20KSP%20Mitra%20Sejati%20Persada,%20saya%20ingin%20mendapatkan%20informasi%20lebih%20lanjut%20tentang%20produk',
+                    ]],
                 ],
             ],
             'cabang' => [
@@ -413,8 +470,9 @@ class ImportKspContent extends Command
                 'title' => 'Berita',
                 'sections' => [
                     ['hero', 'Artikel & Berita', 'Informasi dan kegiatan terbaru KSP Mitra Sejati Persada melalui Instagram resmi kami', null],
-                    ['instagram', 'Konten dari Instagram resmi kami', 'Ikuti @kspmspersada untuk update terbaru', [
+                    ['instagram', 'Konten dari Instagram resmi kami', 'Menampilkan 6 postingan terbaru dari akun @kspmspersada', [
                         'handle' => 'kspmspersada',
+                        'profile_url' => 'https://www.instagram.com/kspmspersada',
                         'posts' => [
                             'https://www.instagram.com/reel/DM6qmQPS9zB/',
                             'https://www.instagram.com/reel/DNNDS46SumO/',
@@ -434,12 +492,14 @@ class ImportKspContent extends Command
             ],
         ];
 
+        $metaTitles = ['cabang' => 'Cabang Kami', 'unit-usaha' => 'Unit Usaha', 'berita' => 'Artikel & Berita'];
+
         foreach ($pages as $slug => $pageData) {
             $page = Page::updateOrCreate(
                 ['site_id' => $site->id, 'slug' => $slug],
                 [
                     'title' => $pageData['title'],
-                    'meta_title' => $pageData['title'] . ' | KSP Mitra Sejati Persada',
+                    'meta_title' => ($metaTitles[$slug] ?? $pageData['title']) . ' | KSP Mitra Sejati Persada',
                     'meta_desc' => Str::limit(strip_tags($pageData['sections'][0][2] ?? $pageData['sections'][0][1]), 155),
                     'is_published' => true,
                 ]
@@ -456,6 +516,9 @@ class ImportKspContent extends Command
                     ]
                 );
             }
+
+            // buang section lama yang sudah tidak ada di sumber
+            $page->sections()->whereNotIn('key', array_column($pageData['sections'], 0))->delete();
         }
 
         $this->line('  pages: ' . count($pages));

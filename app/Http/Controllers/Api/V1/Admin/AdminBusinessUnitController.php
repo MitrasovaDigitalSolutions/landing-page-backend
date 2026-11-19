@@ -29,12 +29,26 @@ class AdminBusinessUnitController extends Controller
             'url' => ['nullable', 'url', 'max:255'],
             'order' => ['integer'],
             'image' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp', 'max:10240'],
+            'images' => ['nullable', 'array'],
+            'images.*' => ['file', 'mimes:jpg,jpeg,png,webp', 'max:10240'],
         ]);
 
         if ($request->hasFile('image')) {
             $validated['image_path'] = $request->file('image')->store("business-units/{$site->slug}", 'public');
         }
         unset($validated['image']);
+
+        $images = collect($request->file('images') ?? [])
+            ->map(fn ($file) => $file->store("business-units/{$site->slug}", 'public'))
+            ->all();
+
+        if ($images) {
+            $validated['images'] = $images;
+            $validated['image_path'] ??= $images[0];
+        } else {
+            unset($validated['images']);
+        }
+
         $validated['site_id'] = $site->id;
 
         $unit = BusinessUnit::create($validated);
@@ -57,12 +71,24 @@ class AdminBusinessUnitController extends Controller
             'url' => ['nullable', 'url', 'max:255'],
             'order' => ['integer'],
             'image' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp', 'max:10240'],
+            'images' => ['nullable', 'array'],
+            'images.*' => ['file', 'mimes:jpg,jpeg,png,webp', 'max:10240'],
         ]);
 
         if ($request->hasFile('image')) {
             $validated['image_path'] = $request->file('image')->store("business-units/{$site->slug}", 'public');
         }
         unset($validated['image']);
+
+        if ($request->hasFile('images')) {
+            $images = collect($request->file('images'))
+                ->map(fn ($file) => $file->store("business-units/{$site->slug}", 'public'))
+                ->all();
+            $validated['images'] = $images;
+            $validated['image_path'] ??= $images[0];
+        } else {
+            unset($validated['images']);
+        }
 
         $unit->update($validated);
 
