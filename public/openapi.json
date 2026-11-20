@@ -4855,6 +4855,7 @@
                     },
                     "data": {
                         "type": "object",
+                        "description": "Setting dikelompokkan per group. Flag disable konten memakai nama seragam is_active: modules.is_active = { services, branches, business_units, careers, news, contact } (false = sembunyikan menu/route di frontend).",
                         "additionalProperties": {
                             "type": "object",
                             "additionalProperties": true
@@ -4869,6 +4870,16 @@
                                 "phone": "+6281234567890",
                                 "email": "info@kspmitra.com",
                                 "address": "Jl. Raya Bisnis No. 10, Jakarta"
+                            },
+                            "modules": {
+                                "is_active": {
+                                    "services": true,
+                                    "branches": true,
+                                    "business_units": true,
+                                    "careers": false,
+                                    "news": true,
+                                    "contact": true
+                                }
                             }
                         }
                     }
@@ -5914,6 +5925,7 @@
                                 },
                                 "value": {
                                     "nullable": true,
+                                    "description": "String, angka, atau objek. Untuk group=modules key=is_active kirim objek { services: true, branches: false, ... }.",
                                     "example": "6281234567801"
                                 }
                             }
