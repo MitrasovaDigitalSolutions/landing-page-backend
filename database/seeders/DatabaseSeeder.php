@@ -376,6 +376,16 @@ class DatabaseSeeder extends Seeder
                     'brand_color' => '#1E40AF',
                     'meta_keywords' => 'mitrasova, ' . $unitData['slug'] . ', layanan profesional',
                 ],
+                'modules' => [
+                    // nama flag seragam: is_active (per modul, false = menu & route disembunyikan)
+                    'is_active' => [
+                        'services' => true,
+                        'portfolios' => true,
+                        'business_units' => true,
+                        'news' => true,
+                        'contact' => true,
+                    ],
+                ],
                 'contact' => [
                     'phone' => $unitData['phone'],
                     'email' => $unitData['email'],
@@ -546,7 +556,7 @@ class DatabaseSeeder extends Seeder
                     'title' => 'Beranda',
                     'meta_title' => $unitData['name'] . ' - ' . $unitData['tagline'],
                     'meta_desc' => 'Layanan profesional dan terpercaya dari ' . $unitData['name'],
-                    'is_published' => true,
+                    'is_active' => true,
                 ]
             );
 

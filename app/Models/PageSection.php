@@ -20,11 +20,13 @@ class PageSection extends Model
         'payload',
         'image_path',
         'order',
+        'is_active',
     ];
 
     protected $casts = [
         'payload' => 'array',
         'order' => 'integer',
+        'is_active' => 'boolean',
     ];
 
     protected $appends = [

@@ -88,6 +88,20 @@ class ImportKspContent extends Command
             );
         }
 
+        // flag modul aktif per tenant (nama seragam: is_active); frontend pakai untuk sembunyikan menu & route
+        // (firstOrCreate: perubahan manual dari dashboard admin tidak ditimpa saat import ulang)
+        SiteSetting::firstOrCreate(
+            ['site_id' => $site->id, 'key' => 'is_active'],
+            ['group' => 'modules', 'value' => [
+                'services' => true,
+                'branches' => true,
+                'business_units' => true,
+                'careers' => true,
+                'news' => true,
+                'contact' => true,
+            ]]
+        );
+
         $this->line('  settings: ' . count($settings));
     }
 
@@ -501,7 +515,6 @@ class ImportKspContent extends Command
                     'title' => $pageData['title'],
                     'meta_title' => ($metaTitles[$slug] ?? $pageData['title']) . ' | KSP Mitra Sejati Persada',
                     'meta_desc' => Str::limit(strip_tags($pageData['sections'][0][2] ?? $pageData['sections'][0][1]), 155),
-                    'is_published' => true,
                 ]
             );
 

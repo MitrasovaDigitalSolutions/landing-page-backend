@@ -44,6 +44,42 @@
                 }
             }
         },
+        "/api/v1/pages": {
+            "get": {
+                "summary": "List published pages",
+                "description": "Dipakai frontend untuk membangun menu/nav. Hanya halaman dengan is_active = true.",
+                "tags": [
+                    "Pages"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Pages retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Page"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/MissingSiteKey"
+                    }
+                }
+            }
+        },
         "/api/v1/pages/{slug}": {
             "get": {
                 "summary": "Get page detail by slug",
@@ -4886,6 +4922,11 @@
                         "nullable": true,
                         "example": "http://localhost/storage/sections/hero.jpg"
                     },
+                    "is_active": {
+                        "type": "boolean",
+                        "description": "Kalau false, section tidak dikirim oleh endpoint publik",
+                        "example": true
+                    },
                     "order": {
                         "type": "integer",
                         "example": 1
@@ -4921,7 +4962,7 @@
                         "nullable": true,
                         "example": "Layanan simpan pinjam terpercaya dan profesional"
                     },
-                    "is_published": {
+                    "is_active": {
                         "type": "boolean",
                         "example": true
                     },
@@ -5904,7 +5945,7 @@
                         "type": "string",
                         "maxLength": 300
                     },
-                    "is_published": {
+                    "is_active": {
                         "type": "boolean",
                         "example": true
                     }
@@ -5946,6 +5987,11 @@
                     "order": {
                         "type": "integer",
                         "example": 0
+                    },
+                    "is_active": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Set false untuk menyembunyikan section dari endpoint publik"
                     }
                 }
             },

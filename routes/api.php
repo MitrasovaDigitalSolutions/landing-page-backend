@@ -39,6 +39,7 @@ Route::prefix('v1')->group(function () {
     // --- Public Frontend Tenant Endpoints (Read-only + Inquiry Form) ---
     Route::middleware('tenant')->group(function () {
         Route::get('/settings', [SiteSettingController::class, 'index']);
+        Route::get('/pages', [PageController::class, 'index']);
         Route::get('/pages/{slug}', [PageController::class, 'show']);
         Route::get('/service-types', [ServiceController::class, 'types']);
         Route::get('/services', [ServiceController::class, 'index']);

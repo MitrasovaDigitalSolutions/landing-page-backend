@@ -295,4 +295,51 @@ class AdminApiTest extends TestCase
             ->deleteJson("/api/v1/admin/branches/{$branchId}")
             ->assertStatus(200);
     }
+
+    public function test_section_can_be_disabled_from_public_page(): void
+    {
+        $token = $this->superadminToken();
+        $headers = ['Authorization' => 'Bearer ' . $token, 'X-Site-Key' => 'ksp'];
+
+        $pageId = $this->withHeaders($headers)
+            ->postJson('/api/v1/admin/pages', [
+                'slug' => 'tentang-kami',
+                'title' => 'Tentang Kami',
+                'is_active' => true,
+            ])
+            ->assertStatus(201)
+            ->json('data.id');
+
+        $sectionId = $this->withHeaders($headers)
+            ->postJson("/api/v1/admin/pages/{$pageId}/sections", [
+                'key' => 'hero',
+                'title' => 'Hero',
+            ])
+            ->assertStatus(201)
+            ->assertJsonPath('data.is_active', true)
+            ->json('data.id');
+
+        $this->withHeaders($headers)
+            ->putJson("/api/v1/admin/sections/{$sectionId}", ['is_active' => false])
+            ->assertStatus(200)
+            ->assertJsonPath('data.is_active', false);
+
+        $this->withHeader('X-Site-Key', 'ksp')
+            ->getJson('/api/v1/pages/tentang-kami')
+            ->assertStatus(200)
+            ->assertJsonCount(0, 'data.sections');
+
+        // daftar halaman untuk nav
+        $this->withHeader('X-Site-Key', 'ksp')
+            ->getJson('/api/v1/pages')
+            ->assertStatus(200)
+            ->assertJsonFragment(['slug' => 'tentang-kami']);
+
+        // admin tetap melihat section yang nonaktif
+        $this->withHeaders($headers)
+            ->getJson("/api/v1/admin/pages/{$pageId}")
+            ->assertStatus(200)
+            ->assertJsonCount(1, 'data.sections')
+            ->assertJsonPath('data.sections.0.is_active', false);
+    }
 }

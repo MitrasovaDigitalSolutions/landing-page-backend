@@ -17,11 +17,11 @@ class Page extends Model
         'title',
         'meta_title',
         'meta_desc',
-        'is_published',
+        'is_active',
     ];
 
     protected $casts = [
-        'is_published' => 'boolean',
+        'is_active' => 'boolean',
     ];
 
     public function sections(): HasMany

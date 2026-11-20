@@ -31,7 +31,7 @@ class AdminPageController extends Controller
             'slug' => ['nullable', 'string', 'max:50'],
             'meta_title' => ['nullable', 'string', 'max:200'],
             'meta_desc' => ['nullable', 'string', 'max:300'],
-            'is_published' => ['boolean'],
+            'is_active' => ['boolean'],
         ]);
 
         $slug = !empty($validated['slug']) ? Str::slug($validated['slug']) : Str::slug($validated['title']);
@@ -42,7 +42,7 @@ class AdminPageController extends Controller
             'slug' => $slug,
             'meta_title' => $validated['meta_title'] ?? null,
             'meta_desc' => $validated['meta_desc'] ?? null,
-            'is_published' => $validated['is_published'] ?? true,
+            'is_active' => $validated['is_active'] ?? true,
         ]);
 
         return response()->json([
@@ -73,7 +73,7 @@ class AdminPageController extends Controller
             'slug' => ['sometimes', 'nullable', 'string', 'max:50'],
             'meta_title' => ['nullable', 'string', 'max:200'],
             'meta_desc' => ['nullable', 'string', 'max:300'],
-            'is_published' => ['boolean'],
+            'is_active' => ['boolean'],
         ]);
 
         if (isset($validated['slug'])) {
@@ -114,6 +114,7 @@ class AdminPageController extends Controller
             'payload' => ['nullable', 'array'],
             'image' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,svg', 'max:10240'],
             'order' => ['integer'],
+            'is_active' => ['boolean'],
         ]);
 
         $imagePath = null;
@@ -130,6 +131,7 @@ class AdminPageController extends Controller
             'payload' => $validated['payload'] ?? null,
             'image_path' => $imagePath,
             'order' => $validated['order'] ?? 0,
+            'is_active' => $validated['is_active'] ?? true,
         ]);
 
         return response()->json([
@@ -152,6 +154,7 @@ class AdminPageController extends Controller
             'payload' => ['nullable', 'array'],
             'image' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,svg', 'max:10240'],
             'order' => ['integer'],
+            'is_active' => ['boolean'],
         ]);
 
         if ($request->hasFile('image')) {

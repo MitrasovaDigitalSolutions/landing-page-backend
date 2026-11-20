@@ -301,6 +301,32 @@ export default async function RootLayout() {
   * `section.key === 'vision_mission'` -> Render komponen `<VisionMission data={section} />`
   * `section.key === 'cta'` -> Render tombol WhatsApp / Konsultasi
 
+#### B.1 Menyembunyikan konten (nama flag seragam: `is_active`)
+
+Tiga level, semuanya pakai `is_active` (boolean, `false` = sembunyikan):
+
+| Level | Field | Efek |
+|---|---|---|
+| Section di dalam halaman | `page_sections.is_active` | Section **tidak dikirim** oleh `GET /pages/{slug}`. Admin tetap melihatnya di `GET /admin/pages/{id}`. |
+| Seluruh halaman | `pages.is_active` | `GET /pages/{slug}` -> 404, dan slug hilang dari `GET /pages`. |
+| Modul/menu per tenant | setting `modules.is_active` = `{ "services": true, "branches": true, ... }` | Frontend sembunyikan menu & route modul yang `false`. Bukan memblokir endpoint. |
+
+```http
+GET /api/v1/pages        # daftar halaman aktif, untuk membangun nav
+```
+```json
+{ "success": true, "data": [ { "slug": "home", "title": "Beranda", "meta_title": "Beranda | KSP Mitra Sejati Persada" } ] }
+```
+
+Mengubahnya (admin):
+```http
+PUT /api/v1/admin/sections/{id}   { "is_active": false }
+PUT /api/v1/admin/pages/{id}      { "is_active": false }
+POST /api/v1/admin/settings       { "settings": [ { "group": "modules", "key": "is_active", "value": { "services": true, "branches": false } } ] }
+```
+
+Import ulang `cms:import-ksp` **tidak** menimpa `is_active` halaman/section (dan hanya membuat setting `modules.is_active` kalau belum ada).
+
 ### C. Daftar Produk & Layanan
 * **Endpoint:** 
   * `GET /service-types` -> List tab filter (misal: "Simpanan", "Pinjaman")
