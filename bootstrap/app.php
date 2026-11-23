@@ -19,5 +19,37 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        // Ubah pelanggaran constraint DB jadi 422, bukan 500 (mis. slug duplikat saat admin menyimpan)
+        $exceptions->render(function (\Illuminate\Database\UniqueConstraintViolationException $e, \Illuminate\Http\Request $request) {
+            if (! $request->is('api/*')) {
+                return null;
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Data sudah ada (duplikat).',
+            ], 422);
+        });
+
+        $exceptions->render(function (\Illuminate\Database\NotNullConstraintViolationException $e, \Illuminate\Http\Request $request) {
+            if (! $request->is('api/*')) {
+                return null;
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Ada kolom wajib yang kosong.',
+            ], 422);
+        });
+
+        $exceptions->render(function (\Illuminate\Database\ForeignKeyConstraintViolationException $e, \Illuminate\Http\Request $request) {
+            if (! $request->is('api/*')) {
+                return null;
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Data terkait tidak ditemukan.',
+            ], 422);
+        });
     })->create();

@@ -296,6 +296,48 @@ class AdminApiTest extends TestCase
             ->assertStatus(200);
     }
 
+    public function test_settings_update_ignores_derived_url_keys_and_allows_null(): void
+    {
+        $token = $this->superadminToken();
+        $headers = ['Authorization' => 'Bearer ' . $token, 'X-Site-Key' => 'ksp'];
+
+        $this->withHeaders($headers)
+            ->postJson('/api/v1/admin/settings', [
+                'settings' => [
+                    ['group' => 'general', 'key' => 'brand_color', 'value' => '#123456'],
+                    ['group' => 'contact', 'key' => 'address', 'value' => null],
+                    // nilai turunan dari endpoint publik, dikirim ulang oleh dashboard -> harus diabaikan
+                    ['group' => 'contact', 'key' => 'maps_embed_url', 'value' => null],
+                    ['group' => 'general', 'key' => 'logo_url', 'value' => null],
+                ],
+            ])
+            ->assertStatus(200)
+            ->assertJsonPath('success', true);
+
+        $settings = $this->withHeaders($headers)
+            ->getJson('/api/v1/admin/settings')
+            ->assertStatus(200);
+
+        $this->assertSame('#123456', $settings->json('data.general.brand_color'));
+        $this->assertArrayNotHasKey('maps_embed_url', $settings->json('data.contact') ?? []);
+        $this->assertArrayNotHasKey('logo_url', $settings->json('data.general') ?? []);
+    }
+
+    public function test_duplicate_slug_returns_422_instead_of_500(): void
+    {
+        $token = $this->superadminToken();
+        $headers = ['Authorization' => 'Bearer ' . $token, 'X-Site-Key' => 'ksp'];
+
+        $this->withHeaders($headers)
+            ->postJson('/api/v1/admin/pages', ['title' => 'Duplikat', 'slug' => 'duplikat'])
+            ->assertStatus(201);
+
+        $this->withHeaders($headers)
+            ->postJson('/api/v1/admin/pages', ['title' => 'Duplikat', 'slug' => 'duplikat'])
+            ->assertStatus(422)
+            ->assertJsonPath('success', false);
+    }
+
     public function test_section_can_be_disabled_from_public_page(): void
     {
         $token = $this->superadminToken();

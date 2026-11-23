@@ -37,6 +37,11 @@ class AdminSiteSettingController extends Controller
         $site = app('current_site');
 
         foreach ($validated['settings'] as $item) {
+            // key *_url adalah nilai turunan dari *_path (dibuat otomatis oleh endpoint publik), jangan disimpan
+            if (str_ends_with($item['key'], '_url')) {
+                continue;
+            }
+
             SiteSetting::updateOrCreate(
                 [
                     'site_id' => $site->id,
