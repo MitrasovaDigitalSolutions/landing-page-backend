@@ -14,6 +14,11 @@ class SiteSettingController extends Controller
 
         $grouped = [];
         foreach ($settings as $setting) {
+            // key *_url tidak pernah disimpan; selalu diturunkan dari *_path di bawah
+            if (str_ends_with($setting->key, '_url')) {
+                continue;
+            }
+
             $grouped[$setting->group][$setting->key] = $setting->value;
 
             // expose absolute URL for any *_path setting so the frontend never builds storage URLs itself

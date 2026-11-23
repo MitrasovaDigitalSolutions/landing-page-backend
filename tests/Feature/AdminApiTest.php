@@ -323,6 +323,24 @@ class AdminApiTest extends TestCase
         $this->assertArrayNotHasKey('logo_url', $settings->json('data.general') ?? []);
     }
 
+    public function test_stale_url_setting_row_never_overrides_derived_url(): void
+    {
+        $site = Site::where('slug', 'ksp')->first();
+
+        // baris lama dari dashboard: key *_url tersimpan relatif
+        \App\Models\SiteSetting::create([
+            'site_id' => $site->id,
+            'group' => 'general',
+            'key' => 'logo_url',
+            'value' => 'branding/ksp-logo.webp',
+        ]);
+
+        $this->withHeader('X-Site-Key', 'ksp')
+            ->getJson('/api/v1/settings')
+            ->assertStatus(200)
+            ->assertJsonMissing(['logo_url' => 'branding/ksp-logo.webp']);
+    }
+
     public function test_duplicate_slug_returns_422_instead_of_500(): void
     {
         $token = $this->superadminToken();
