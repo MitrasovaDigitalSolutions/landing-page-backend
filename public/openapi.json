@@ -37,9 +37,16 @@
                         "$ref": "#/components/responses/SiteNotFound"
                     }
                 },
-                "security": [
+                "parameters": [
                     {
-                        "SiteKey": []
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
                     }
                 ]
             }
@@ -78,9 +85,16 @@
                         "$ref": "#/components/responses/MissingSiteKey"
                     }
                 },
-                "security": [
+                "parameters": [
                     {
-                        "SiteKey": []
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
                     }
                 ]
             }
@@ -101,6 +115,16 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
                     }
                 ],
                 "responses": {
@@ -120,12 +144,7 @@
                     "404": {
                         "$ref": "#/components/responses/ResourceNotFound"
                     }
-                },
-                "security": [
-                    {
-                        "SiteKey": []
-                    }
-                ]
+                }
             }
         },
         "/api/v1/service-types": {
@@ -153,9 +172,16 @@
                         "$ref": "#/components/responses/SiteNotFound"
                     }
                 },
-                "security": [
+                "parameters": [
                     {
-                        "SiteKey": []
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
                     }
                 ]
             }
@@ -205,6 +231,16 @@
                             "type": "integer",
                             "default": 1
                         }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
                     }
                 ],
                 "responses": {
@@ -224,12 +260,7 @@
                     "404": {
                         "$ref": "#/components/responses/SiteNotFound"
                     }
-                },
-                "security": [
-                    {
-                        "SiteKey": []
-                    }
-                ]
+                }
             }
         },
         "/api/v1/services/{slug}": {
@@ -247,6 +278,16 @@
                         "description": "Service slug",
                         "schema": {
                             "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -267,12 +308,7 @@
                     "404": {
                         "$ref": "#/components/responses/ResourceNotFound"
                     }
-                },
-                "security": [
-                    {
-                        "SiteKey": []
-                    }
-                ]
+                }
             }
         },
         "/api/v1/portfolios": {
@@ -319,6 +355,16 @@
                             "type": "integer",
                             "default": 1
                         }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
                     }
                 ],
                 "responses": {
@@ -338,12 +384,7 @@
                     "404": {
                         "$ref": "#/components/responses/SiteNotFound"
                     }
-                },
-                "security": [
-                    {
-                        "SiteKey": []
-                    }
-                ]
+                }
             }
         },
         "/api/v1/portfolios/{slug}": {
@@ -361,6 +402,16 @@
                         "description": "Portfolio slug",
                         "schema": {
                             "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -381,12 +432,7 @@
                     "404": {
                         "$ref": "#/components/responses/ResourceNotFound"
                     }
-                },
-                "security": [
-                    {
-                        "SiteKey": []
-                    }
-                ]
+                }
             }
         },
         "/api/v1/article-categories": {
@@ -414,9 +460,16 @@
                         "$ref": "#/components/responses/SiteNotFound"
                     }
                 },
-                "security": [
+                "parameters": [
                     {
-                        "SiteKey": []
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
                     }
                 ]
             }
@@ -455,6 +508,16 @@
                             "type": "integer",
                             "default": 1
                         }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
                     }
                 ],
                 "responses": {
@@ -474,12 +537,7 @@
                     "404": {
                         "$ref": "#/components/responses/SiteNotFound"
                     }
-                },
-                "security": [
-                    {
-                        "SiteKey": []
-                    }
-                ]
+                }
             }
         },
         "/api/v1/articles/{slug}": {
@@ -497,6 +555,16 @@
                         "description": "Article slug",
                         "schema": {
                             "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -517,12 +585,7 @@
                     "404": {
                         "$ref": "#/components/responses/ResourceNotFound"
                     }
-                },
-                "security": [
-                    {
-                        "SiteKey": []
-                    }
-                ]
+                }
             }
         },
         "/api/v1/faqs": {
@@ -541,6 +604,16 @@
                         "schema": {
                             "type": "boolean",
                             "default": false
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -561,12 +634,7 @@
                     "404": {
                         "$ref": "#/components/responses/SiteNotFound"
                     }
-                },
-                "security": [
-                    {
-                        "SiteKey": []
-                    }
-                ]
+                }
             }
         },
         "/api/v1/testimonials": {
@@ -594,9 +662,16 @@
                         "$ref": "#/components/responses/SiteNotFound"
                     }
                 },
-                "security": [
+                "parameters": [
                     {
-                        "SiteKey": []
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
                     }
                 ]
             }
@@ -626,9 +701,16 @@
                         "$ref": "#/components/responses/SiteNotFound"
                     }
                 },
-                "security": [
+                "parameters": [
                     {
-                        "SiteKey": []
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
                     }
                 ]
             }
@@ -683,9 +765,16 @@
                         }
                     }
                 },
-                "security": [
+                "parameters": [
                     {
-                        "SiteKey": []
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
                     }
                 ]
             }
@@ -1236,7 +1325,6 @@
                 "summary": "Ambil semua setting (grouped)",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -1273,6 +1361,18 @@
                         },
                         "description": "Validasi gagal"
                     }
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
+                    }
                 ]
             },
             "post": {
@@ -1282,7 +1382,6 @@
                 "summary": "Bulk upsert setting (key-value)",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -1329,6 +1428,18 @@
                         },
                         "description": "Validasi gagal"
                     }
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
+                    }
                 ]
             }
         },
@@ -1340,7 +1451,6 @@
                 "summary": "Daftar halaman",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -1377,6 +1487,18 @@
                         },
                         "description": "Validasi gagal"
                     }
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
+                    }
                 ]
             },
             "post": {
@@ -1386,7 +1508,6 @@
                 "summary": "Buat halaman",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -1433,6 +1554,18 @@
                         },
                         "description": "Validasi gagal"
                     }
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
+                    }
                 ]
             }
         },
@@ -1444,7 +1577,6 @@
                 "summary": "Detail halaman + sections",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -1455,6 +1587,16 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -1500,7 +1642,6 @@
                 "summary": "Update halaman",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -1511,6 +1652,16 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -1566,7 +1717,6 @@
                 "summary": "Hapus halaman",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -1577,6 +1727,16 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -1624,7 +1784,6 @@
                 "summary": "Tambah section ke halaman (dukung upload gambar)",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -1635,6 +1794,16 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -1692,7 +1861,6 @@
                 "summary": "Update section",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -1703,6 +1871,16 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -1757,7 +1935,6 @@
                 "summary": "Hapus section",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -1768,6 +1945,16 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -1815,7 +2002,6 @@
                 "summary": "Daftar tipe layanan + jumlah layanan",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -1852,6 +2038,18 @@
                         },
                         "description": "Validasi gagal"
                     }
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
+                    }
                 ]
             },
             "post": {
@@ -1861,7 +2059,6 @@
                 "summary": "Buat tipe layanan",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -1908,6 +2105,18 @@
                         },
                         "description": "Validasi gagal"
                     }
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
+                    }
                 ]
             }
         },
@@ -1919,7 +2128,6 @@
                 "summary": "Update tipe layanan",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -1930,6 +2138,16 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -1985,7 +2203,6 @@
                 "summary": "Hapus tipe layanan (422 bila masih dipakai)",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -1996,6 +2213,16 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -2043,7 +2270,6 @@
                 "summary": "Daftar layanan (paginated)",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -2054,6 +2280,16 @@
                         "required": false,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -2099,7 +2335,6 @@
                 "summary": "Buat layanan (dukung upload icon & thumbnail)",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -2146,6 +2381,18 @@
                         },
                         "description": "Validasi gagal"
                     }
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
+                    }
                 ]
             }
         },
@@ -2157,7 +2404,6 @@
                 "summary": "Detail layanan",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -2168,6 +2414,16 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -2213,7 +2469,6 @@
                 "summary": "Update layanan",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -2224,6 +2479,16 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -2278,7 +2543,6 @@
                 "summary": "Hapus layanan",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -2289,6 +2553,16 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -2336,7 +2610,6 @@
                 "summary": "Daftar portofolio (paginated)",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -2373,6 +2646,18 @@
                         },
                         "description": "Validasi gagal"
                     }
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
+                    }
                 ]
             },
             "post": {
@@ -2382,7 +2667,6 @@
                 "summary": "Buat portofolio (thumbnail wajib + gallery opsional)",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -2429,6 +2713,18 @@
                         },
                         "description": "Validasi gagal"
                     }
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
+                    }
                 ]
             }
         },
@@ -2440,7 +2736,6 @@
                 "summary": "Detail portofolio",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -2451,6 +2746,16 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -2496,7 +2801,6 @@
                 "summary": "Update portofolio",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -2507,6 +2811,16 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -2561,7 +2875,6 @@
                 "summary": "Hapus portofolio",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -2572,6 +2885,16 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -2619,7 +2942,6 @@
                 "summary": "Daftar kategori artikel",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -2656,6 +2978,18 @@
                         },
                         "description": "Validasi gagal"
                     }
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
+                    }
                 ]
             },
             "post": {
@@ -2665,7 +2999,6 @@
                 "summary": "Buat kategori artikel",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -2712,6 +3045,18 @@
                         },
                         "description": "Validasi gagal"
                     }
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
+                    }
                 ]
             }
         },
@@ -2723,7 +3068,6 @@
                 "summary": "Update kategori artikel",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -2734,6 +3078,16 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -2789,7 +3143,6 @@
                 "summary": "Hapus kategori artikel",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -2800,6 +3153,16 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -2847,7 +3210,6 @@
                 "summary": "Daftar artikel (semua status)",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -2862,6 +3224,16 @@
                                 "published",
                                 "archived"
                             ]
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -2907,7 +3279,6 @@
                 "summary": "Buat artikel (author otomatis = user login)",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -2954,6 +3325,18 @@
                         },
                         "description": "Validasi gagal"
                     }
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
+                    }
                 ]
             }
         },
@@ -2965,7 +3348,6 @@
                 "summary": "Detail artikel",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -2976,6 +3358,16 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -3021,7 +3413,6 @@
                 "summary": "Update artikel",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -3032,6 +3423,16 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -3086,7 +3487,6 @@
                 "summary": "Hapus artikel",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -3097,6 +3497,16 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -3144,7 +3554,6 @@
                 "summary": "Daftar kategori FAQ",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -3181,6 +3590,18 @@
                         },
                         "description": "Validasi gagal"
                     }
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
+                    }
                 ]
             },
             "post": {
@@ -3190,7 +3611,6 @@
                 "summary": "Buat kategori FAQ",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -3237,6 +3657,18 @@
                         },
                         "description": "Validasi gagal"
                     }
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
+                    }
                 ]
             }
         },
@@ -3248,7 +3680,6 @@
                 "summary": "Update kategori FAQ",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -3259,6 +3690,16 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -3314,7 +3755,6 @@
                 "summary": "Hapus kategori FAQ",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -3325,6 +3765,16 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -3372,7 +3822,6 @@
                 "summary": "Daftar FAQ (semua, termasuk non-aktif)",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -3409,6 +3858,18 @@
                         },
                         "description": "Validasi gagal"
                     }
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
+                    }
                 ]
             },
             "post": {
@@ -3418,7 +3879,6 @@
                 "summary": "Buat FAQ",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -3465,6 +3925,18 @@
                         },
                         "description": "Validasi gagal"
                     }
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
+                    }
                 ]
             }
         },
@@ -3476,7 +3948,6 @@
                 "summary": "Update FAQ",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -3487,6 +3958,16 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -3542,7 +4023,6 @@
                 "summary": "Hapus FAQ",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -3553,6 +4033,16 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -3600,7 +4090,6 @@
                 "summary": "Daftar testimoni",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -3637,6 +4126,18 @@
                         },
                         "description": "Validasi gagal"
                     }
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
+                    }
                 ]
             },
             "post": {
@@ -3646,7 +4147,6 @@
                 "summary": "Buat testimoni (avatar opsional)",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -3693,6 +4193,18 @@
                         },
                         "description": "Validasi gagal"
                     }
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
+                    }
                 ]
             }
         },
@@ -3704,7 +4216,6 @@
                 "summary": "Update testimoni",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -3715,6 +4226,16 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -3769,7 +4290,6 @@
                 "summary": "Hapus testimoni",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -3780,6 +4300,16 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -3827,7 +4357,6 @@
                 "summary": "Daftar partner",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -3864,6 +4393,18 @@
                         },
                         "description": "Validasi gagal"
                     }
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
+                    }
                 ]
             },
             "post": {
@@ -3873,7 +4414,6 @@
                 "summary": "Buat partner (logo wajib)",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -3920,6 +4460,18 @@
                         },
                         "description": "Validasi gagal"
                     }
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
+                    }
                 ]
             }
         },
@@ -3931,7 +4483,6 @@
                 "summary": "Update partner",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -3942,6 +4493,16 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -3996,7 +4557,6 @@
                 "summary": "Hapus partner",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -4007,6 +4567,16 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -4054,7 +4624,6 @@
                 "summary": "Inbox inquiry (paginated)",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -4069,6 +4638,16 @@
                                 "contacted",
                                 "closed"
                             ]
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -4116,7 +4695,6 @@
                 "summary": "Detail inquiry",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -4127,6 +4705,16 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -4172,7 +4760,6 @@
                 "summary": "Hapus inquiry",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -4183,6 +4770,16 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -4230,7 +4827,6 @@
                 "summary": "Ubah status inquiry + catatan internal",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -4241,6 +4837,16 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -4297,11 +4903,6 @@
                 ],
                 "summary": "Daftar kantor pusat & cabang",
                 "description": "Diurutkan dengan kantor pusat lebih dulu. Setiap cabang menyertakan image_urls (URL absolut).",
-                "security": [
-                    {
-                        "SiteKey": []
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "Berhasil",
@@ -4319,7 +4920,19 @@
                     "404": {
                         "$ref": "#/components/responses/SiteNotFound"
                     }
-                }
+                },
+                "parameters": [
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
+                    }
+                ]
             }
         },
         "/api/v1/business-units": {
@@ -4328,11 +4941,6 @@
                     "Unit Usaha"
                 ],
                 "summary": "Daftar unit usaha",
-                "security": [
-                    {
-                        "SiteKey": []
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "Berhasil",
@@ -4350,7 +4958,19 @@
                     "404": {
                         "$ref": "#/components/responses/SiteNotFound"
                     }
-                }
+                },
+                "parameters": [
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
+                    }
+                ]
             }
         },
         "/api/v1/admin/branches": {
@@ -4361,7 +4981,6 @@
                 "summary": "Daftar cabang",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -4388,6 +5007,18 @@
                     {
                         "$ref": "#/components/responses/SiteNotFound"
                     }
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
+                    }
                 ]
             },
             "post": {
@@ -4397,7 +5028,6 @@
                 "summary": "Buat cabang (dukung upload banyak foto)",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -4443,6 +5073,18 @@
                             }
                         }
                     }
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
+                    }
                 ]
             }
         },
@@ -4454,7 +5096,6 @@
                 "summary": "Update cabang (kirim images untuk mengganti semua foto)",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -4465,6 +5106,16 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -4519,7 +5170,6 @@
                 "summary": "Hapus cabang",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -4530,6 +5180,16 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -4567,7 +5227,6 @@
                 "summary": "Daftar unit usaha",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -4594,6 +5253,18 @@
                     {
                         "$ref": "#/components/responses/SiteNotFound"
                     }
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
+                    }
                 ]
             },
             "post": {
@@ -4603,7 +5274,6 @@
                 "summary": "Buat unit usaha",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -4649,6 +5319,18 @@
                             }
                         }
                     }
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
+                    }
                 ]
             }
         },
@@ -4660,7 +5342,6 @@
                 "summary": "Update unit usaha",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -4671,6 +5352,16 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -4725,7 +5416,6 @@
                 "summary": "Hapus unit usaha",
                 "security": [
                     {
-                        "SiteKey": [],
                         "bearerAuth": []
                     }
                 ],
@@ -4736,6 +5426,16 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
                         }
                     }
                 ],
@@ -4768,12 +5468,6 @@
     },
     "components": {
         "securitySchemes": {
-            "SiteKey": {
-                "type": "apiKey",
-                "in": "header",
-                "name": "X-Site-Key",
-                "description": "Tenant API Key (e.g. key-ksp-12345) or Site Slug (e.g. ksp)"
-            },
             "bearerAuth": {
                 "type": "http",
                 "scheme": "bearer",
