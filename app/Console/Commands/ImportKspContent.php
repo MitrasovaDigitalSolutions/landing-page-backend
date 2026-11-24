@@ -102,6 +102,12 @@ class ImportKspContent extends Command
             ]]
         );
 
+        // KSP memakai tampilan layanan berbentuk teks (accordion); jangan timpa kalau admin sudah ubah
+        SiteSetting::firstOrCreate(
+            ['site_id' => $site->id, 'key' => 'layout'],
+            ['group' => 'services', 'value' => 'accordion']
+        );
+
         $this->line('  settings: ' . count($settings));
     }
 

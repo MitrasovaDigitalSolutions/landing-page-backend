@@ -27,6 +27,7 @@ Disimpan di settings group `services`, key `layout`. Dibaca dari `GET /settings`
 
 Aturan:
 - Nilai kosong / tidak dikenal → `accordion`.
+   (Semua tenant di DB prod sudah punya nilai eksplisit: `ksp`/`percetakan`/`teknologi`/`transportasi`/`bengkel-las` = `accordion`, `konveksi` = `carousel`.)
 - Carousel hanya di beranda (teaser). Katalog tetap grid supaya semua produk terbaca.
 - Produk tanpa foto tetap dirender sebagai **kartu dengan placeholder**, jangan fallback ke baris teks.
 - Harga hanya dirender bila `price !== null`.
