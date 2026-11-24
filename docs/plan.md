@@ -226,3 +226,48 @@ Juga: `services-preview.tsx` saat ini tidak diimpor di mana pun — aman dihapus
 - [ ] Admin mengosongkan `price` (kirim `""`) → tersimpan null.
 - [ ] Ubah `services.layout` di portal memengaruhi beranda dan `/produk`.
 - [ ] Tenant Miset tidak memakai brand/nomor KSP.
+
+---
+
+## 11. Media gallery (gambar di storage)
+
+Backend sudah menyediakan 3 endpoint admin (sudah live):
+
+| Method | Path | Fungsi |
+|---|---|---|
+| `GET` | `/api/v1/admin/media` | daftar gambar + dipakai di mana |
+| `POST` | `/api/v1/admin/media/replace` | ganti isi file, path tetap (multipart: `path`, `file`) |
+| `DELETE` | `/api/v1/admin/media` | hapus file (JSON: `path`, `force`) |
+
+Query `GET`: `?unused=1` (belum dipakai), `?q=` (cari path), `?dir=services/ksp` (prefix folder).
+Semua hanya menyentuh file milik site aktif (`X-Site-Key`) atau yang direferensikan konten site tersebut.
+
+Contoh item:
+
+```json
+{
+  "path": "services/ksp/kantorpusat.webp",
+  "url": "http://43.157.197.42:8088/storage/services/ksp/kantorpusat.webp?v=1763000000",
+  "size": 48213,
+  "modified_at": "2026-11-24T04:50:00+00:00",
+  "owner_site": "ksp",
+  "usage": [
+    { "type": "page_section", "id": 12, "label": "Beranda / hero", "field": "payload" },
+    { "type": "service", "id": 5, "label": "Simpanan Pendidikan", "field": "thumbnail_path" }
+  ]
+}
+```
+
+Aturan:
+- `DELETE` mengembalikan **409** bila gambar masih dipakai, dengan `data.usage` berisi daftar pemakai. Kirim `force: true` untuk tetap menghapus (referensi jadi gambar rusak — tampilkan peringatan di UI).
+- `replace` **tidak mengubah path**, jadi semua konten otomatis ikut berganti. Ekstensi file baru harus sama dengan file lama (`jpg`/`jpeg` dianggap sama); kalau beda → 422.
+- URL selalu diberi cache buster `?v=<mtime>`, jadi cukup pakai `url` dari response (jangan susun sendiri).
+- `usage.type`: `service`, `portfolio`, `branch`, `business_unit`, `article`, `partner`, `testimonial`, `page_section`, `setting`.
+
+Tugas portal (halaman `/media`):
+1. `features/media/api/media.api.ts` — `listMedia({unused,q,dir})`, `replaceMedia(path, file)` (FormData), `deleteMedia(path, force)`.
+2. Halaman grid: thumbnail (`object-cover`, `rounded-xl`), path kecil, badge jumlah pemakaian, tombol **Ganti** (file picker → replace) dan **Hapus** (confirm; kalau 409 tampilkan daftar `usage` + opsi force).
+3. Toolbar: search, toggle "hanya yang belum dipakai", filter folder.
+4. Setelah replace/delete → invalidasi query media **dan** query konten terkait (service/pages/portfolio/…) karena gambarnya berubah.
+
+Landing page tidak perlu perubahan: `url` yang dipakai sudah mengandung `?v=`, jadi gambar baru langsung terlihat.

@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\V1\Admin\AdminBranchController;
 use App\Http\Controllers\Api\V1\Admin\AdminBusinessUnitController;
 use App\Http\Controllers\Api\V1\Admin\AdminFaqController;
 use App\Http\Controllers\Api\V1\Admin\AdminInquiryController;
+use App\Http\Controllers\Api\V1\Admin\AdminMediaController;
 use App\Http\Controllers\Api\V1\Admin\AdminMiscController;
 use App\Http\Controllers\Api\V1\Admin\AdminPageController;
 use App\Http\Controllers\Api\V1\Admin\AdminPortfolioController;
@@ -150,6 +151,11 @@ Route::prefix('v1')->group(function () {
         Route::post('/business-units', [AdminBusinessUnitController::class, 'store']);
         Route::put('/business-units/{id}', [AdminBusinessUnitController::class, 'update']);
         Route::delete('/business-units/{id}', [AdminBusinessUnitController::class, 'destroy']);
+
+        // Media Library (gambar + dipakai di mana)
+        Route::get('/media', [AdminMediaController::class, 'index']);
+        Route::post('/media/replace', [AdminMediaController::class, 'replace']);
+        Route::delete('/media', [AdminMediaController::class, 'destroy']);
 
         // Inquiries (Inbox)
         Route::get('/inquiries', [AdminInquiryController::class, 'index']);

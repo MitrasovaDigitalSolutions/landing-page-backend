@@ -4616,6 +4616,296 @@
                 ]
             }
         },
+        "/api/v1/admin/media": {
+            "get": {
+                "tags": [
+                    "Admin - Media"
+                ],
+                "summary": "Daftar gambar di storage + info dipakai di mana",
+                "description": "Hanya mengembalikan file milik site aktif (X-Site-Key) atau yang direferensikan konten site tersebut. Filter: unused=1 (belum dipakai), q= (cari di path), dir= (prefix folder, mis. services/ksp).",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "unused",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "dir",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "services/ksp"
+                        }
+                    },
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Daftar gambar beserta pemakaiannya",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MediaListResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/MissingSiteKey"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Admin - Media"
+                ],
+                "summary": "Hapus gambar",
+                "description": "Ditolak dengan 409 bila gambar masih dipakai konten. Kirim force=true untuk tetap menghapus (referensi konten akan menjadi gambar rusak).",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "path"
+                                ],
+                                "properties": {
+                                    "path": {
+                                        "type": "string",
+                                        "example": "services/ksp/kantorpusat.webp"
+                                    },
+                                    "force": {
+                                        "type": "boolean",
+                                        "default": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Gambar dihapus",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Gambar dihapus."
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "path": {
+                                                    "type": "string"
+                                                },
+                                                "usage": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/MediaUsage"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "File tidak ditemukan"
+                    },
+                    "409": {
+                        "description": "Gambar masih dipakai konten (usage dikembalikan di data.usage)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "usage": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/MediaUsage"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/MissingSiteKey"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "422": {
+                        "description": "Path tidak valid"
+                    }
+                }
+            }
+        },
+        "/api/v1/admin/media/replace": {
+            "post": {
+                "tags": [
+                    "Admin - Media"
+                ],
+                "summary": "Ganti isi file gambar (path tetap)",
+                "description": "Menimpa byte file di path yang sama sehingga semua referensi konten otomatis memakai gambar baru. Ekstensi file baru harus sama dengan file lama. URL hasil diberi cache buster ?v=<mtime>.",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "path",
+                                    "file"
+                                ],
+                                "properties": {
+                                    "path": {
+                                        "type": "string",
+                                        "example": "services/ksp/kantorpusat.webp"
+                                    },
+                                    "file": {
+                                        "type": "string",
+                                        "format": "binary",
+                                        "description": "jpg/jpeg/png/webp/gif/svg, maks 10MB, ekstensi sama dengan file lama"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Gambar diganti",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/MediaItem"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/MissingSiteKey"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "description": "File tidak ditemukan"
+                    },
+                    "422": {
+                        "description": "Validasi gagal / ekstensi berbeda / path tidak valid"
+                    }
+                }
+            }
+        },
         "/api/v1/admin/inquiries": {
             "get": {
                 "tags": [
@@ -5760,6 +6050,89 @@
                     },
                     "data": {
                         "$ref": "#/components/schemas/Page"
+                    }
+                }
+            },
+            "MediaUsage": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "description": "service | portfolio | branch | business_unit | article | partner | testimonial | page_section | setting",
+                        "example": "service"
+                    },
+                    "id": {
+                        "type": "integer",
+                        "example": 12
+                    },
+                    "label": {
+                        "type": "string",
+                        "nullable": true,
+                        "example": "Simpanan Pendidikan"
+                    },
+                    "field": {
+                        "type": "string",
+                        "example": "thumbnail_path"
+                    }
+                }
+            },
+            "MediaItem": {
+                "type": "object",
+                "properties": {
+                    "path": {
+                        "type": "string",
+                        "example": "services/ksp/kantorpusat.webp"
+                    },
+                    "url": {
+                        "type": "string",
+                        "example": "http://43.157.197.42:8088/storage/services/ksp/kantorpusat.webp?v=1763000000"
+                    },
+                    "size": {
+                        "type": "integer",
+                        "example": 48213
+                    },
+                    "modified_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "owner_site": {
+                        "type": "string",
+                        "nullable": true,
+                        "example": "ksp"
+                    },
+                    "usage": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MediaUsage"
+                        }
+                    }
+                }
+            },
+            "MediaListResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MediaItem"
+                        }
+                    },
+                    "meta": {
+                        "type": "object",
+                        "properties": {
+                            "total": {
+                                "type": "integer",
+                                "example": 45
+                            },
+                            "unused": {
+                                "type": "integer",
+                                "example": 6
+                            }
+                        }
                     }
                 }
             },
