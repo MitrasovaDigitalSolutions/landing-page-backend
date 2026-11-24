@@ -64,12 +64,18 @@ class MediaLibrary
     public function usageMap(Site $site): array
     {
         $map = [];
+        $seen = [];
 
-        $add = function (?string $raw, string $type, int|string $id, ?string $label, string $field) use (&$map) {
+        $add = function (?string $raw, string $type, int|string $id, ?string $label, string $field) use (&$map, &$seen) {
             $path = self::normalize($raw);
             if (! $path || ! self::isImage($path)) {
                 return;
             }
+            $key = "{$type}#{$id}#{$field}#{$path}";
+            if (isset($seen[$key])) {
+                return;
+            }
+            $seen[$key] = true;
             $map[$path][] = ['type' => $type, 'id' => $id, 'label' => $label, 'field' => $field];
         };
 
@@ -114,7 +120,7 @@ class MediaLibrary
         foreach (PageSection::whereHas('page', fn ($q) => $q->where('site_id', $site->id))->with('page')->get() as $row) {
             $label = trim(($row->page?->title ?? 'Halaman') . ' / ' . $row->key);
             $add($row->image_path, 'page_section', $row->id, $label, 'image_path');
-            foreach ($this->payloadPaths($row->payload) as $path) {
+            foreach (array_unique($this->payloadPaths($row->payload)) as $path) {
                 $add($path, 'page_section', $row->id, $label, 'payload');
             }
         }
