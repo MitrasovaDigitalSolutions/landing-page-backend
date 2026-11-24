@@ -30,7 +30,7 @@ use Illuminate\Support\Str;
  */
 class ImportKspContent extends Command
 {
-    protected $signature = 'cms:import-ksp {--keep-extra : Jangan hapus konten dummy KSP (portofolio, testimoni, partner, artikel, FAQ)}';
+    protected $signature = 'cms:import-ksp {--keep-extra : Jangan hapus konten dummy KSP (portofolio, testimoni, partner, artikel, FAQ)} {--purge-dummy : Hapus konten dummy KSP (artikel, FAQ, portofolio, testimoni, partner). Default: TIDAK menghapus, karena bisa menghapus konten buatan admin}';
 
     protected $description = 'Impor konten asli KSP Mitra Sejati Persada (dari situs lama) ke tenant ksp';
 
@@ -52,7 +52,8 @@ class ImportKspContent extends Command
         $this->importBusinessUnits($site);
         $this->importPages($site);
 
-        if (! $this->option('keep-extra')) {
+        // hapus konten dummy hanya bila diminta eksplisit — command ini pernah menghapus artikel/FAQ buatan admin
+        if ($this->option('purge-dummy') && ! $this->option('keep-extra')) {
             $this->purgeDummy($site);
         }
 
