@@ -78,32 +78,30 @@ class AdminMediaController extends Controller
             return $this->error('File bukan milik site ini.', 403);
         }
 
-        // ekstensi harus sama: ganti isi file, bukan rename, agar referensi DB tetap valid
-        $oldExt = strtolower(pathinfo($path, PATHINFO_EXTENSION));
-        $newExt = strtolower($request->file('file')->getClientOriginalExtension());
-        if ($oldExt === 'jpeg') {
-            $oldExt = 'jpg';
-        }
-        if ($newExt === 'jpeg') {
-            $newExt = 'jpg';
-        }
-        if ($oldExt !== $newExt) {
-            return $this->error("Ekstensi file harus sama dengan file lama (.{$oldExt}).", 422);
-        }
-
         $dir = dirname($path);
-        $disk->putFileAs($dir === '.' ? '' : $dir, $request->file('file'), basename($path));
 
-        $mtime = $disk->lastModified($path);
+        // simpan sebagai file baru lalu arahkan semua referensi konten ke path baru.
+        // Lebih aman daripada menimpa: ekstensi boleh berbeda dan URL ikut berubah (cache ikut segar).
+        $newPath = $request->file('file')->store($dir === '.' ? '' : $dir, 'public');
+        $updated = $this->library->replaceReferences($site, $path, $newPath);
+
+        // file lama dibuang hanya kalau sudah tidak dipakai site mana pun
+        if ($newPath !== $path && ! $this->library->isUsedByAnySite($path)) {
+            $disk->delete($path);
+        }
+
+        $mtime = $disk->lastModified($newPath);
 
         return response()->json([
             'success' => true,
-            'message' => 'Gambar berhasil diganti.',
+            'message' => 'Gambar berhasil diganti.' . ($updated > 0 ? " {$updated} referensi konten diperbarui." : ''),
             'data' => [
-                'path' => $path,
-                'url' => url('storage/' . $path) . '?v=' . $mtime,
-                'size' => $disk->size($path),
+                'path' => $newPath,
+                'previous_path' => $path,
+                'url' => url('storage/' . $newPath) . '?v=' . $mtime,
+                'size' => $disk->size($newPath),
                 'modified_at' => date(DATE_ATOM, $mtime),
+                'references_updated' => $updated,
             ],
         ]);
     }

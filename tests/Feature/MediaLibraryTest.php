@@ -79,27 +79,45 @@ class MediaLibraryTest extends TestCase
         Storage::disk('public')->assertMissing('services/ksp/used.jpg');
     }
 
-    public function test_replace_keeps_path_and_rejects_extension_change(): void
+    public function test_replace_creates_new_path_and_updates_references(): void
     {
+        $site = Site::where('slug', 'ksp')->first();
+        $service = Service::where('site_id', $site->id)->firstOrFail();
+
         Storage::disk('public')->put('services/ksp/swap.jpg', 'old-bytes');
+        Storage::disk('public')->put('services/ksp/old2.jpg', 'old-bytes');
+        $service->update(['thumbnail_path' => 'services/ksp/swap.jpg']);
 
-        $this->withHeaders($this->headers())
-            ->post('/api/v1/admin/media/replace', [
-                'path' => 'services/ksp/swap.jpg',
-                'file' => UploadedFile::fake()->image('new.jpg'),
-            ])
-            ->assertStatus(200)
-            ->assertJsonPath('data.path', 'services/ksp/swap.jpg');
-
-        Storage::disk('public')->assertExists('services/ksp/swap.jpg');
-        $this->assertNotSame('old-bytes', Storage::disk('public')->get('services/ksp/swap.jpg'));
-
-        $this->withHeaders($this->headers())
+        // ekstensi boleh berbeda karena file disimpan sebagai path baru
+        $res = $this->withHeaders($this->headers())
             ->post('/api/v1/admin/media/replace', [
                 'path' => 'services/ksp/swap.jpg',
                 'file' => UploadedFile::fake()->image('new.png'),
             ])
-            ->assertStatus(422);
+            ->assertStatus(200);
+
+        $newPath = $res->json('data.path');
+
+        $this->assertNotSame('services/ksp/swap.jpg', $newPath);
+        $this->assertSame(1, $res->json('data.references_updated'));
+        $this->assertSame($newPath, $service->fresh()->thumbnail_path);
+        Storage::disk('public')->assertExists($newPath);
+        Storage::disk('public')->assertMissing('services/ksp/swap.jpg');
+    }
+
+    public function test_replace_unused_file_removes_old_one(): void
+    {
+        Storage::disk('public')->put('services/ksp/old2.jpg', 'old-bytes');
+
+        $res = $this->withHeaders($this->headers())
+            ->post('/api/v1/admin/media/replace', [
+                'path' => 'services/ksp/old2.jpg',
+                'file' => UploadedFile::fake()->image('baru.jpg'),
+            ])
+            ->assertStatus(200);
+
+        $this->assertSame(0, $res->json('data.references_updated'));
+        Storage::disk('public')->assertMissing('services/ksp/old2.jpg');
     }
 
     public function test_media_is_scoped_per_site(): void

@@ -236,7 +236,7 @@ Backend sudah menyediakan 3 endpoint admin (sudah live):
 | Method | Path | Fungsi |
 |---|---|---|
 | `GET` | `/api/v1/admin/media` | daftar gambar + dipakai di mana |
-| `POST` | `/api/v1/admin/media/replace` | ganti isi file, path tetap (multipart: `path`, `file`) |
+| `POST` | `/api/v1/admin/media/replace` | ganti gambar: simpan path baru + update referensi konten (multipart: `path`, `file`) |
 | `DELETE` | `/api/v1/admin/media` | hapus file (JSON: `path`, `force`) |
 
 Query `GET`: `?unused=1` (belum dipakai), `?q=` (cari path), `?dir=services/ksp` (prefix folder).
@@ -260,8 +260,9 @@ Contoh item:
 
 Aturan:
 - `DELETE` mengembalikan **409** bila gambar masih dipakai, dengan `data.usage` berisi daftar pemakai. Kirim `force: true` untuk tetap menghapus (referensi jadi gambar rusak — tampilkan peringatan di UI).
-- `replace` **tidak mengubah path**, jadi semua konten otomatis ikut berganti. Ekstensi file baru harus sama dengan file lama (`jpg`/`jpeg` dianggap sama); kalau beda → 422.
-- URL selalu diberi cache buster `?v=<mtime>`, jadi cukup pakai `url` dari response (jangan susun sendiri).
+- `replace` menyimpan file sebagai **path baru** lalu memperbarui semua referensi konten site itu (services, portfolios, branches, business_units, articles, partners, testimonials, page_sections termasuk payload, dan settings) ke path baru. Respons berisi `data.path` (baru), `data.previous_path`, dan `data.references_updated`. File lama dihapus bila tidak lagi dipakai site mana pun.
+- Karena path berubah, ekstensi **boleh berbeda** dan URL ikut baru → cache otomatis segar. Selalu pakai `data.url` dari respons, jangan menyusun URL sendiri.
+- URL di list diberi cache buster `?v=<mtime>`; setelah replace/delete, refetch list.
 - `usage.type`: `service`, `portfolio`, `branch`, `business_unit`, `article`, `partner`, `testimonial`, `page_section`, `setting`.
 
 Tugas portal (halaman `/media`):

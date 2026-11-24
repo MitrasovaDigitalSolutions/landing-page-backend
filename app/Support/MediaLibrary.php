@@ -179,6 +179,111 @@ class MediaLibrary
         return array_key_exists($path, $this->usageMap($site));
     }
 
+    public function isUsedByAnySite(string $path): bool
+    {
+        foreach (Site::all() as $site) {
+            if ($this->isUsedBySite($path, $site)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Ganti semua referensi $old -> $new pada konten satu site (kolom, array JSON, dan payload section).
+     *
+     * @return int jumlah field yang berubah
+     */
+    public function replaceReferences(Site $site, string $old, string $new): int
+    {
+        $changed = 0;
+
+        $swap = fn ($value) => is_string($value) && str_contains($value, $old)
+            ? str_replace($old, $new, $value)
+            : $value;
+
+        $updateSimple = function ($rows, array $fields) use ($swap, &$changed) {
+            foreach ($rows as $row) {
+                $dirty = [];
+                foreach ($fields as $field) {
+                    $value = $swap($row->{$field});
+                    if ($value !== $row->{$field}) {
+                        $dirty[$field] = $value;
+                    }
+                }
+                if ($dirty !== []) {
+                    $row->update($dirty);
+                    $changed += count($dirty);
+                }
+            }
+        };
+
+        $updateLists = function ($rows, array $fields) use ($swap, &$changed) {
+            foreach ($rows as $row) {
+                $dirty = [];
+                foreach ($fields as $field) {
+                    $before = (array) $row->{$field};
+                    $after = array_map($swap, $before);
+                    if ($after !== $before) {
+                        $dirty[$field] = $after;
+                    }
+                }
+                if ($dirty !== []) {
+                    $row->update($dirty);
+                    $changed += count($dirty);
+                }
+            }
+        };
+
+        $updateSimple(Service::where('site_id', $site->id)->get(), ['thumbnail_path', 'icon_path']);
+        $updateSimple(Article::where('site_id', $site->id)->get(), ['thumbnail_path']);
+        $updateSimple(Partner::where('site_id', $site->id)->get(), ['logo_path']);
+        $updateSimple(Testimonial::where('site_id', $site->id)->get(), ['avatar_path']);
+        $updateSimple(Portfolio::where('site_id', $site->id)->get(), ['thumbnail_path']);
+        $updateSimple(Branch::where('site_id', $site->id)->get(), ['image_path']);
+        $updateSimple(BusinessUnit::where('site_id', $site->id)->get(), ['image_path']);
+
+        $updateLists(Portfolio::where('site_id', $site->id)->get(), ['gallery_images']);
+        $updateLists(Branch::where('site_id', $site->id)->get(), ['images']);
+        $updateLists(BusinessUnit::where('site_id', $site->id)->get(), ['images']);
+
+        foreach (PageSection::whereHas('page', fn ($q) => $q->where('site_id', $site->id))->get() as $row) {
+            $dirty = [];
+
+            $imagePath = $swap($row->image_path);
+            if ($imagePath !== $row->image_path) {
+                $dirty['image_path'] = $imagePath;
+            }
+
+            if (is_array($row->payload)) {
+                $payload = $this->replaceInArray($row->payload, $old, $new);
+                if ($payload !== $row->payload) {
+                    $dirty['payload'] = $payload;
+                }
+            }
+
+            if ($dirty !== []) {
+                $row->update($dirty);
+                $changed += count($dirty);
+            }
+        }
+
+        foreach (SiteSetting::where('site_id', $site->id)->get() as $row) {
+            $before = $row->value;
+            $after = is_array($before)
+                ? $this->replaceInArray($before, $old, $new)
+                : $swap($before);
+
+            if ($after !== $before) {
+                $row->update(['value' => $after]);
+                $changed++;
+            }
+        }
+
+        return $changed;
+    }
+
     /** Pemilik file ditebak dari konvensi folder (<jenis>/<slug>/... atau branding/<slug>-...). */
     public function ownerSlug(string $path): ?string
     {
@@ -209,6 +314,18 @@ class MediaLibrary
     /**
      * @return array<int, string>
      */
+    private function replaceInArray(array $values, string $old, string $new): array
+    {
+        $out = [];
+        foreach ($values as $key => $value) {
+            $out[$key] = is_array($value)
+                ? $this->replaceInArray($value, $old, $new)
+                : (is_string($value) && str_contains($value, $old) ? str_replace($old, $new, $value) : $value);
+        }
+
+        return $out;
+    }
+
     private function payloadPaths(mixed $payload): array
     {
         if (is_string($payload)) {

@@ -4821,8 +4821,8 @@
                 "tags": [
                     "Admin - Media"
                 ],
-                "summary": "Ganti isi file gambar (path tetap)",
-                "description": "Menimpa byte file di path yang sama sehingga semua referensi konten otomatis memakai gambar baru. Ekstensi file baru harus sama dengan file lama. URL hasil diberi cache buster ?v=<mtime>.",
+                "summary": "Ganti gambar (simpan sebagai file baru + update semua referensi)",
+                "description": "Menyimpan file baru di folder yang sama, lalu memperbarui semua referensi konten site ini (services, portfolios, branches, business_units, articles, partners, testimonials, page_sections termasuk payload, dan settings) dari path lama ke path baru. File lama dihapus bila tidak lagi dipakai site mana pun. Ekstensi bebas (jpg/png/webp/gif/svg) dan URL baru otomatis bebas cache.",
                 "security": [
                     {
                         "bearerAuth": []
@@ -4858,7 +4858,7 @@
                                     "file": {
                                         "type": "string",
                                         "format": "binary",
-                                        "description": "jpg/jpeg/png/webp/gif/svg, maks 10MB, ekstensi sama dengan file lama"
+                                        "description": "jpg/jpeg/png/webp/gif/svg, maks 10MB (ekstensi bebas)"
                                     }
                                 }
                             }
@@ -4881,7 +4881,31 @@
                                             "type": "string"
                                         },
                                         "data": {
-                                            "$ref": "#/components/schemas/MediaItem"
+                                            "type": "object",
+                                            "properties": {
+                                                "path": {
+                                                    "type": "string",
+                                                    "description": "Path file baru"
+                                                },
+                                                "previous_path": {
+                                                    "type": "string",
+                                                    "description": "Path lama yang sudah tidak dipakai"
+                                                },
+                                                "url": {
+                                                    "type": "string"
+                                                },
+                                                "size": {
+                                                    "type": "integer"
+                                                },
+                                                "modified_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "references_updated": {
+                                                    "type": "integer",
+                                                    "description": "Jumlah field konten yang dialihkan ke path baru"
+                                                }
+                                            }
                                         }
                                     }
                                 }

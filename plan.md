@@ -461,7 +461,7 @@ Semua di bawah prefix `/api/v1/admin` dan butuh `Authorization` + `X-Site-Key` (
 | **Showcase** | `GET/POST /testimonials`, `PUT/DELETE /testimonials/{id}` | CRUD testimoni + rating 1ï¿½5 |
 | | `GET/POST /partners`, `PUT/DELETE /partners/{id}` | CRUD partner + logo |
 | **Media** | `GET /media` | Daftar gambar di storage + info dipakai di mana (`?unused=1`, `?q=`, `?dir=`) |
-| | `POST /media/replace` | Ganti isi file, path tetap (multipart `path` + `file`) |
+| | `POST /media/replace` | Ganti gambar: simpan path baru + update referensi konten (multipart `path` + `file`) |
 | | `DELETE /media` | Hapus file; `409` bila masih dipakai, kirim `force` untuk paksa |
 | **Inquiries** | `GET /inquiries?status=`, `GET /inquiries/{id}` | Inbox pesan masuk |
 | | `PATCH /inquiries/{id}/status` | Ubah status (`new`/`contacted`/`closed`) + catatan internal |
