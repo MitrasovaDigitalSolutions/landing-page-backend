@@ -5634,6 +5634,9 @@
                                 "email": "info@kspmitra.com",
                                 "address": "Jl. Raya Bisnis No. 10, Jakarta"
                             },
+                            "services": {
+                                "layout": "accordion"
+                            },
                             "modules": {
                                 "is_active": {
                                     "services": true,
@@ -5847,6 +5850,7 @@
                     },
                     "body": {
                         "type": "string",
+                        "nullable": true,
                         "example": "Penjelasan lengkap syarat dan ketentuan produk simpanan sejahtera prima..."
                     },
                     "icon_path": {
@@ -5875,6 +5879,18 @@
                             "Bagi hasil hingga 8% p.a.",
                             "Dapat dicairkan kapan saja"
                         ]
+                    },
+                    "price": {
+                        "type": "integer",
+                        "nullable": true,
+                        "description": "Harga dalam rupiah (integer, tanpa desimal). null = tidak menampilkan harga.",
+                        "example": 75000
+                    },
+                    "price_note": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Keterangan satuan harga, mis. \"/pcs\", \"per lusin\", \"mulai dari\".",
+                        "example": "/pcs"
                     },
                     "is_featured": {
                         "type": "boolean",
@@ -6806,8 +6822,7 @@
                 "required": [
                     "service_type_id",
                     "name",
-                    "short_desc",
-                    "body"
+                    "short_desc"
                 ],
                 "properties": {
                     "service_type_id": {
@@ -6830,6 +6845,7 @@
                     },
                     "body": {
                         "type": "string",
+                        "nullable": true,
                         "example": "Deskripsi lengkap layanan"
                     },
                     "features": {
@@ -6841,6 +6857,19 @@
                             "Setoran awal Rp 50.000",
                             "Bagi hasil 7.5%"
                         ]
+                    },
+                    "price": {
+                        "type": "integer",
+                        "nullable": true,
+                        "minimum": 0,
+                        "description": "Harga rupiah (integer). Kirim string kosong untuk mengosongkan.",
+                        "example": 75000
+                    },
+                    "price_note": {
+                        "type": "string",
+                        "nullable": true,
+                        "maxLength": 30,
+                        "example": "/pcs"
                     },
                     "is_featured": {
                         "type": "boolean",

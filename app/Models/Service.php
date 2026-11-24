@@ -22,6 +22,8 @@ class Service extends Model
         'icon_path',
         'thumbnail_path',
         'features',
+        'price',
+        'price_note',
         'is_featured',
         'is_active',
         'order',
@@ -29,6 +31,7 @@ class Service extends Model
 
     protected $casts = [
         'features' => 'array',
+        'price' => 'integer',
         'is_featured' => 'boolean',
         'is_active' => 'boolean',
         'order' => 'integer',

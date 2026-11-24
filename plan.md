@@ -124,10 +124,12 @@ export interface Service {
   name: string;
   slug: string;
   short_desc: string;
-  body: string;
+  body: string | null;         // boleh null untuk produk yang tidak butuh deskripsi panjang
   icon_url: string | null;
   thumbnail_url: string | null;
   features: string[] | null;  // Array poin keunggulan produk/layanan
+  price: number | null;        // rupiah, integer tanpa desimal; null = tanpa harga
+  price_note: string | null;   // e.g. "/pcs", "per lusin", "mulai dari"
   is_featured: boolean;
   order: number;
   service_type?: ServiceType;
@@ -330,8 +332,11 @@ Import ulang `cms:import-ksp` **tidak** menimpa `is_active` halaman/section (dan
 ### C. Daftar Produk & Layanan
 * **Endpoint:** 
   * `GET /service-types` -> List tab filter (misal: "Simpanan", "Pinjaman")
-  * `GET /services` -> List semua produk (support query param `?service_type=slug-tipe`)
+  * `GET /services` -> List semua produk (query param `?service_type=slug-tipe`, `?featured=1`, `?per_page`)
   * `GET /services/{slug}` -> Halaman detail produk (fitur, deskripsi lengkap)
+
+> Produk yang punya `price` + `thumbnail_url` ditampilkan sebagai kartu bergambar (lihat Â§10).
+> Mode tampilan (`accordion` / `carousel` / `grid`) diatur per tenant lewat setting `services.layout`.
 
 ### D. Portofolio Proyek (Penting untuk Konveksi, Bengkel Las, Teknologi)
 * **Endpoint:** 
@@ -423,7 +428,7 @@ X-Site-Key: ksp
 * `X-Site-Key` menentukan **tenant mana** yang sedang dikelola.
 * `GET /api/v1/auth/me` untuk restore sesi saat halaman di-refresh.
 * `POST /api/v1/auth/logout` untuk revoke token aktif.
-* Token tidak punya masa berlaku otomatis � revoke manual saat logout. Simpan di `httpOnly cookie` (disarankan) atau `secure storage`, jangan di `localStorage` polos.
+* Token tidak punya masa berlaku otomatis ï¿½ revoke manual saat logout. Simpan di `httpOnly cookie` (disarankan) atau `secure storage`, jangan di `localStorage` polos.
 
 ### 8.2 Peran & Hak Akses
 
@@ -453,7 +458,7 @@ Semua di bawah prefix `/api/v1/admin` dan butuh `Authorization` + `X-Site-Key` (
 | | `GET/POST /articles`, `GET/PUT/DELETE /articles/{id}` | CRUD artikel (draft/published/archived) |
 | **FAQs** | `GET/POST /faq-categories`, `PUT/DELETE /faq-categories/{id}` | CRUD kategori FAQ |
 | | `GET/POST /faqs`, `PUT/DELETE /faqs/{id}` | CRUD FAQ |
-| **Showcase** | `GET/POST /testimonials`, `PUT/DELETE /testimonials/{id}` | CRUD testimoni + rating 1�5 |
+| **Showcase** | `GET/POST /testimonials`, `PUT/DELETE /testimonials/{id}` | CRUD testimoni + rating 1ï¿½5 |
 | | `GET/POST /partners`, `PUT/DELETE /partners/{id}` | CRUD partner + logo |
 | **Inquiries** | `GET /inquiries?status=`, `GET /inquiries/{id}` | Inbox pesan masuk |
 | | `PATCH /inquiries/{id}/status` | Ubah status (`new`/`contacted`/`closed`) + catatan internal |
@@ -466,13 +471,13 @@ Semua di bawah prefix `/api/v1/admin` dan butuh `Authorization` + `X-Site-Key` (
 
 * Batas **10 MB per file** (`max:10240`) untuk seluruh upload: gambar section, icon, thumbnail, gallery, avatar testimoni, logo partner, dan lampiran inquiry.
 * Field yang berisi file **wajib** dikirim sebagai `multipart/form-data`; jangan set header `Content-Type` manual di browser (biarkan boundary otomatis).
-* Saat request berisi file, jangan kirim `Content-Type: application/json` � gunakan `FormData`.
+* Saat request berisi file, jangan kirim `Content-Type: application/json` ï¿½ gunakan `FormData`.
 * Semua path file yang tersimpan dikembalikan sebagai URL absolut (`.../storage/...`), jadi frontend tidak perlu menyusun URL sendiri.
 
 ### 8.5 Helper Admin di Next.js
 
 ```typescript
-// lib/adminApi.ts � khusus dashboard admin, tidak dipakai landing page publik
+// lib/adminApi.ts ï¿½ khusus dashboard admin, tidak dipakai landing page publik
 const API = process.env.NEXT_PUBLIC_API_URL!;
 
 export async function adminFetch<T>(
@@ -516,7 +521,7 @@ revalidatePath('/', 'layout');
 
 ## 9. Konten KSP Mitra Sejati Persada (hasil migrasi situs lama)
 
-Konten tenant `ksp` sudah bukan dummy lagi � diimpor dari `kspmitrasejatipersada.my.id` lewat perintah `php artisan cms:import-ksp` (idempotent, aman dijalankan ulang; tambahkan `--keep-extra` kalau tidak ingin konten dummy dihapus).
+Konten tenant `ksp` sudah bukan dummy lagi ï¿½ diimpor dari `kspmitrasejatipersada.my.id` lewat perintah `php artisan cms:import-ksp` (idempotent, aman dijalankan ulang; tambahkan `--keep-extra` kalau tidak ingin konten dummy dihapus).
 
 ### 9.1 Dua endpoint baru (wajib dipakai halaman Cabang & Unit Usaha)
 
@@ -545,7 +550,7 @@ GET /api/v1/business-units     X-Site-Key: ksp
 }
 ```
 
-Pakai `image_urls` (sudah URL absolut) � jangan menyusun URL sendiri dari `images`.
+Pakai `image_urls` (sudah URL absolut) ï¿½ jangan menyusun URL sendiri dari `images`.
 
 `GET /business-units` ? 6 unit usaha. Field `url` dipakai untuk redirect:
 
@@ -553,7 +558,7 @@ Pakai `image_urls` (sudah URL absolut) � jangan menyusun URL sendiri dari `ima
 {
   "id": 1,
   "name": "Mitra Sejati Trans",
-  "address": "Jl. Batujamus - Jambangan Km. 2, ... � 081329703060",
+  "address": "Jl. Batujamus - Jambangan Km. 2, ... ï¿½ 081329703060",
   "image_path": "business-units/ksp/mst-Cpk5JyTC.jpeg",
   "image_url": "http://43.157.197.42:8088/storage/business-units/ksp/mst-Cpk5JyTC.jpeg",
   "images": ["business-units/ksp/mst-Cpk5JyTC.jpeg", "business-units/ksp/mst1-DoVY92gx.jpg", "business-units/ksp/mst2-CSxZoRYj.jpg"],
@@ -587,7 +592,7 @@ Pakai `image_urls` (sudah URL absolut) � jangan menyusun URL sendiri dari `ima
 | `profil` | `hero`, `sejarah` (body 3 paragraf), `visi-misi` (`visi` + `misi[]`), `program` (`items[]` dengan `desc1`/`desc2`) | |
 | `produk`, `cabang`, `unit-usaha`, `karir`, `berita`, `kontak` | `hero` (+ `cabang.hero.stats`, `karir.hero.image_path`, `karir.values.items[]`, `berita.instagram.posts[]`) | |
 
-Catatan: `image_path` di dalam `payload` masih **path relatif** (contoh `hero/ksp/slide-1.webp`) � frontend cukup prefix `${NEXT_PUBLIC_API_URL}/storage/`.
+Catatan: `image_path` di dalam `payload` masih **path relatif** (contoh `hero/ksp/slide-1.webp`) ï¿½ frontend cukup prefix `${NEXT_PUBLIC_API_URL}/storage/`.
 
 ### 9.4 Setelah migrate
 
@@ -596,3 +601,11 @@ php artisan cms:import-ksp     # jalankan sekali setelah container baru naik
 ```
 
 Migration tabel baru (`branches`, `business_units`) jalan otomatis lewat entrypoint.
+
+---
+
+## 10. Produk Bergambar (Miset) & Mode Tampilan Layanan
+
+Kontrak lengkap + tugas frontend/portal ada di **[`docs/plan.md`](docs/plan.md)**.
+
+Ringkas: produk memakai `/services` + field `price`/`price_note` (baru) dan `body` nullable; mode tampilan per tenant via setting `services.layout` (`accordion` | `carousel` | `grid`). KSP tetap `accordion`.

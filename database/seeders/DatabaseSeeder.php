@@ -386,6 +386,10 @@ class DatabaseSeeder extends Seeder
                         'contact' => true,
                     ],
                 ],
+                'services' => [
+                    // mode tampilan produk: accordion (teks) | carousel (kartu unggulan) | grid
+                    'layout' => 'accordion',
+                ],
                 'contact' => [
                     'phone' => $unitData['phone'],
                     'email' => $unitData['email'],

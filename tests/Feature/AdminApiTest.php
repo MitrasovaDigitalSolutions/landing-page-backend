@@ -402,4 +402,50 @@ class AdminApiTest extends TestCase
             ->assertJsonCount(1, 'data.sections')
             ->assertJsonPath('data.sections.0.is_active', false);
     }
+
+    public function test_service_price_fields_and_optional_body(): void
+    {
+        $token = $this->postJson('/api/v1/auth/login', [
+            'email' => 'admin@mitrasova.com',
+            'password' => 'password123',
+        ])->json('data.token');
+
+        $headers = [
+            'Authorization' => 'Bearer ' . $token,
+            'X-Site-Key' => 'ksp',
+        ];
+
+        $typeId = $this->withHeaders($headers)
+            ->postJson('/api/v1/admin/service-types', ['name' => 'Konveksi', 'slug' => 'konveksi'])
+            ->assertStatus(201)
+            ->json('data.id');
+
+        // body tidak dikirim sama sekali, harga diisi
+        $res = $this->withHeaders($headers)->postJson('/api/v1/admin/services', [
+            'service_type_id' => $typeId,
+            'name' => 'Kaos Komunitas',
+            'short_desc' => 'Kaos komunitas dan tim',
+            'price' => 75000,
+            'price_note' => '/pcs',
+        ]);
+
+        $res->assertStatus(201)
+            ->assertJsonPath('data.price', 75000)
+            ->assertJsonPath('data.price_note', '/pcs')
+            ->assertJsonPath('data.body', null);
+
+        $id = $res->json('data.id');
+
+        // string kosong = kosongkan harga (nullable)
+        $this->withHeaders($headers)
+            ->putJson("/api/v1/admin/services/{$id}", ['price' => '', 'price_note' => ''])
+            ->assertStatus(200)
+            ->assertJsonPath('data.price', null)
+            ->assertJsonPath('data.price_note', null);
+
+        // harga negatif ditolak
+        $this->withHeaders($headers)
+            ->putJson("/api/v1/admin/services/{$id}", ['price' => -1])
+            ->assertStatus(422);
+    }
 }
