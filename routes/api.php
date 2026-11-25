@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\V1\Admin\AdminMediaController;
 use App\Http\Controllers\Api\V1\Admin\AdminMiscController;
 use App\Http\Controllers\Api\V1\Admin\AdminPageController;
 use App\Http\Controllers\Api\V1\Admin\AdminPortfolioController;
+use App\Http\Controllers\Api\V1\Admin\AdminSectionTypeController;
 use App\Http\Controllers\Api\V1\Admin\AdminServiceController;
 use App\Http\Controllers\Api\V1\Admin\AdminSiteSettingController;
 use App\Http\Controllers\Api\V1\Admin\AdminSuperController;
@@ -21,6 +22,7 @@ use App\Http\Controllers\Api\V1\InquiryController;
 use App\Http\Controllers\Api\V1\PageController;
 use App\Http\Controllers\Api\V1\PartnerController;
 use App\Http\Controllers\Api\V1\PortfolioController;
+use App\Http\Controllers\Api\V1\SectionTypeController;
 use App\Http\Controllers\Api\V1\ServiceController;
 use App\Http\Controllers\Api\V1\SiteSettingController;
 use App\Http\Controllers\Api\V1\TestimonialController;
@@ -40,6 +42,7 @@ Route::prefix('v1')->group(function () {
     // --- Public Frontend Tenant Endpoints (Read-only + Inquiry Form) ---
     Route::middleware('tenant')->group(function () {
         Route::get('/settings', [SiteSettingController::class, 'index']);
+        Route::get('/section-types', [SectionTypeController::class, 'index']);
         Route::get('/pages', [PageController::class, 'index']);
         Route::get('/pages/{slug}', [PageController::class, 'show']);
         Route::get('/service-types', [ServiceController::class, 'types']);
@@ -77,6 +80,9 @@ Route::prefix('v1')->group(function () {
         // Settings
         Route::get('/settings', [AdminSiteSettingController::class, 'index']);
         Route::post('/settings', [AdminSiteSettingController::class, 'update']);
+
+        // Section Types
+        Route::get('/section-types', [AdminSectionTypeController::class, 'index']);
 
         // Pages & Sections
         Route::get('/pages', [AdminPageController::class, 'index']);

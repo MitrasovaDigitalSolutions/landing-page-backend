@@ -5778,6 +5778,95 @@
                     }
                 ]
             }
+        },
+        "/api/v1/section-types": {
+            "get": {
+                "summary": "List section types",
+                "description": "Master tipe section (read-only) untuk merender form dinamis. Hanya tipe aktif, urut key.",
+                "tags": [
+                    "Section Types"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of section types",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SectionTypesResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/MissingSiteKey"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/SiteNotFound"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/section-types": {
+            "get": {
+                "tags": [
+                    "Admin - Section Types"
+                ],
+                "summary": "Daftar semua tipe section",
+                "description": "Semua tipe section termasuk yang nonaktif, urut key.",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": [
+                    {
+                        "description": "Berhasil",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SectionTypesResponse"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    {
+                        "$ref": "#/components/responses/MissingSiteKey"
+                    },
+                    {
+                        "$ref": "#/components/responses/SiteNotFound"
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "X-Site-Key",
+                        "in": "header",
+                        "required": true,
+                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
+                        "schema": {
+                            "type": "string",
+                            "example": "key-ksp-12345"
+                        }
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -7165,7 +7254,8 @@
                     },
                     "payload": {
                         "type": "object",
-                        "nullable": true
+                        "nullable": true,
+                        "description": "divalidasi terhadap section_types; field di luar schema dipertahankan"
                     },
                     "image": {
                         "type": "string",
@@ -7842,6 +7932,122 @@
                             "format": "binary"
                         },
                         "description": "Galeri gambar (carousel). Maks 10MB per file (jpg, png, webp)"
+                    }
+                }
+            },
+            "SectionTypeField": {
+                "type": "object",
+                "required": [
+                    "name",
+                    "label",
+                    "type"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "title"
+                    },
+                    "label": {
+                        "type": "string",
+                        "example": "Judul"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "text",
+                            "textarea",
+                            "richtext",
+                            "url",
+                            "image",
+                            "number",
+                            "boolean",
+                            "select",
+                            "list",
+                            "group",
+                            "repeater"
+                        ],
+                        "example": "text"
+                    },
+                    "required": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "max": {
+                        "type": "integer",
+                        "example": 150
+                    },
+                    "rows": {
+                        "type": "integer",
+                        "example": 4
+                    },
+                    "options": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "fields": {
+                        "type": "array",
+                        "description": "Anak field untuk group/repeater (satu level nesting).",
+                        "items": {
+                            "$ref": "#/components/schemas/SectionTypeField"
+                        }
+                    }
+                }
+            },
+            "SectionType": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 7
+                    },
+                    "key": {
+                        "type": "string",
+                        "example": "visi-misi"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Visi & Misi"
+                    },
+                    "description": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "fields": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SectionTypeField"
+                        }
+                    },
+                    "aliases": {
+                        "type": "array",
+                        "nullable": true,
+                        "items": {
+                            "type": "string"
+                        },
+                        "example": [
+                            "vision_mission"
+                        ]
+                    },
+                    "is_active": {
+                        "type": "boolean",
+                        "example": true
+                    }
+                }
+            },
+            "SectionTypesResponse": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SectionType"
+                        }
                     }
                 }
             }

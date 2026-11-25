@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Api\V1\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Page;
 use App\Models\PageSection;
+use App\Models\SectionType;
+use App\Support\SectionPayloadValidator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class AdminPageController extends Controller
 {
@@ -117,6 +120,8 @@ class AdminPageController extends Controller
             'is_active' => ['boolean'],
         ]);
 
+        $warnings = $this->guardSectionPayload($validated['key'], $validated['payload'] ?? null);
+
         $imagePath = null;
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store("sections/{$site->slug}", 'public');
@@ -138,6 +143,7 @@ class AdminPageController extends Controller
             'success' => true,
             'message' => 'Section created successfully',
             'data' => $section,
+            'warnings' => $warnings,
         ], 201);
     }
 
@@ -157,6 +163,8 @@ class AdminPageController extends Controller
             'is_active' => ['boolean'],
         ]);
 
+        $warnings = $this->guardSectionPayload($validated['key'] ?? $section->key, $validated['payload'] ?? null);
+
         if ($request->hasFile('image')) {
             $validated['image_path'] = $request->file('image')->store("sections/{$site->slug}", 'public');
         }
@@ -168,6 +176,7 @@ class AdminPageController extends Controller
             'success' => true,
             'message' => 'Section updated successfully',
             'data' => $section,
+            'warnings' => $warnings,
         ]);
     }
 
@@ -181,5 +190,31 @@ class AdminPageController extends Controller
             'success' => true,
             'message' => 'Section deleted successfully',
         ]);
+    }
+
+    /**
+     * Validate the payload against the resolved section type, returning warnings.
+     */
+    private function guardSectionPayload(string $key, ?array $payload): array
+    {
+        $type = SectionType::resolveForKey($key);
+
+        if ($type) {
+            if (! empty($payload)) {
+                $errors = SectionPayloadValidator::validate($type->fields ?? [], $payload);
+
+                if ($errors !== []) {
+                    throw ValidationException::withMessages($errors);
+                }
+            }
+
+            return [];
+        }
+
+        if (config('cms.section_types.strict')) {
+            throw ValidationException::withMessages(['key' => 'Tipe section tidak dikenal.']);
+        }
+
+        return ["Tipe section '{$key}' belum terdaftar; payload disimpan apa adanya."];
     }
 }

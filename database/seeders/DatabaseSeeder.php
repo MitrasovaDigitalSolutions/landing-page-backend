@@ -26,6 +26,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call(SectionTypeSeeder::class);
+
         // 1. Create Superadmin User
         $admin = User::firstOrCreate(
             ['email' => 'admin@mitrasova.com'],
