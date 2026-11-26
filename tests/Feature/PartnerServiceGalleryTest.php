@@ -129,6 +129,26 @@ class PartnerServiceGalleryTest extends TestCase
             ->assertJsonCount(1, 'data.images');
     }
 
+    public function test_testimonial_accepts_screenshot_image(): void
+    {
+        $response = $this->withHeaders($this->headers())
+            ->post('/api/v1/admin/testimonials', [
+                'name' => 'Budi',
+                'message' => 'Pelayanan bagus dan tepat waktu.',
+                'image' => UploadedFile::fake()->create('wa.png', 32, 'image/png'),
+            ])
+            ->assertStatus(201)
+            ->assertJsonPath('data.name', 'Budi');
+
+        $this->assertNotNull($response->json('data.image_path'));
+        $this->assertNotNull($response->json('data.image_url'));
+
+        $this->assertDatabaseHas('testimonials', [
+            'id' => $response->json('data.id'),
+            'image_path' => $response->json('data.image_path'),
+        ]);
+    }
+
     public function test_gallery_images_are_registered_in_media_usage(): void
     {
         $site = Site::where('slug', 'ksp')->firstOrFail();

@@ -34,11 +34,17 @@ class AdminMiscController extends Controller
             'order' => ['integer'],
             'is_active' => ['boolean'],
             'avatar' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
+            'image' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp', 'max:10240'],
         ]);
 
         $avatarPath = null;
         if ($request->hasFile('avatar')) {
             $avatarPath = $request->file('avatar')->store("testimonials/{$site->slug}", 'public');
+        }
+
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store("testimonials/{$site->slug}", 'public');
         }
 
         $testimonial = Testimonial::create([
@@ -48,6 +54,7 @@ class AdminMiscController extends Controller
             'message' => $validated['message'],
             'rating' => $validated['rating'] ?? 5,
             'avatar_path' => $avatarPath,
+            'image_path' => $imagePath,
             'order' => $validated['order'] ?? 0,
             'is_active' => $validated['is_active'] ?? true,
         ]);
@@ -84,12 +91,18 @@ class AdminMiscController extends Controller
             'order' => ['integer'],
             'is_active' => ['boolean'],
             'avatar' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp', 'max:10240'],
+            'image' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp', 'max:10240'],
         ]);
 
         if ($request->hasFile('avatar')) {
             $validated['avatar_path'] = $request->file('avatar')->store("testimonials/{$site->slug}", 'public');
         }
         unset($validated['avatar']);
+
+        if ($request->hasFile('image')) {
+            $validated['image_path'] = $request->file('image')->store("testimonials/{$site->slug}", 'public');
+        }
+        unset($validated['image']);
 
         $testimonial->update($validated);
 

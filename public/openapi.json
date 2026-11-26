@@ -6815,6 +6815,15 @@
                         "type": "string",
                         "nullable": true
                     },
+                    "image_path": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Screenshot testimoni (mis. chat WhatsApp)."
+                    },
+                    "image_url": {
+                        "type": "string",
+                        "nullable": true
+                    },
                     "message": {
                         "type": "string",
                         "example": "Proses pengajuan pinjaman sangat cepat dan transparan."
@@ -7634,6 +7643,11 @@
                         "type": "string",
                         "format": "binary",
                         "description": "Maks 10MB"
+                    },
+                    "image": {
+                        "type": "string",
+                        "format": "binary",
+                        "description": "Screenshot testimoni (jpg/png/webp), maks 10MB."
                     }
                 }
             },
