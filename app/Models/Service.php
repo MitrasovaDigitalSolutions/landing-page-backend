@@ -21,6 +21,7 @@ class Service extends Model
         'body',
         'icon_path',
         'thumbnail_path',
+        'images',
         'features',
         'price',
         'price_note',
@@ -31,6 +32,7 @@ class Service extends Model
 
     protected $casts = [
         'features' => 'array',
+        'images' => 'array',
         'price' => 'integer',
         'is_featured' => 'boolean',
         'is_active' => 'boolean',
@@ -40,6 +42,7 @@ class Service extends Model
     protected $appends = [
         'icon_url',
         'thumbnail_url',
+        'image_urls',
     ];
 
     public function serviceType(): BelongsTo
@@ -62,6 +65,16 @@ class Service extends Model
             get: fn () => $this->thumbnail_path
                 ? (str_starts_with($this->thumbnail_path, 'http') ? $this->thumbnail_path : url('storage/' . ltrim($this->thumbnail_path, '/')))
                 : null
+        );
+    }
+
+    protected function imageUrls(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => collect($this->images ?? [])
+                ->map(fn ($path) => str_starts_with($path, 'http') ? $path : url('storage/' . ltrim($path, '/')))
+                ->values()
+                ->all()
         );
     }
 }

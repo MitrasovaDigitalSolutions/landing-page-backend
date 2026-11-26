@@ -119,6 +119,7 @@ class AdminMiscController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:100'],
             'website_url' => ['nullable', 'url', 'max:255'],
+            'phone' => ['nullable', 'string', 'max:30'],
             'order' => ['integer'],
             'logo' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,svg', 'max:5120'],
         ]);
@@ -129,6 +130,7 @@ class AdminMiscController extends Controller
             'site_id' => $site->id,
             'name' => $validated['name'],
             'website_url' => $validated['website_url'] ?? null,
+            'phone' => $validated['phone'] ?? null,
             'logo_path' => $logoPath,
             'order' => $validated['order'] ?? 0,
         ]);
@@ -160,6 +162,7 @@ class AdminMiscController extends Controller
         $validated = $request->validate([
             'name' => ['sometimes', 'required', 'string', 'max:100'],
             'website_url' => ['nullable', 'url', 'max:255'],
+            'phone' => ['nullable', 'string', 'max:30'],
             'order' => ['integer'],
             'logo' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,svg', 'max:10240'],
         ]);

@@ -133,6 +133,8 @@ class AdminServiceController extends Controller
             'order' => ['integer'],
             'thumbnail' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp', 'max:10240'],
             'icon' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,svg', 'max:5120'],
+            'images' => ['nullable', 'array'],
+            'images.*' => ['file', 'mimes:jpg,jpeg,png,webp', 'max:10240'],
         ]);
 
         $slug = !empty($validated['slug']) ? Str::slug($validated['slug']) : Str::slug($validated['name']);
@@ -147,6 +149,10 @@ class AdminServiceController extends Controller
             $iconPath = $request->file('icon')->store("services/icons/{$site->slug}", 'public');
         }
 
+        $images = collect($request->file('images') ?? [])
+            ->map(fn ($file) => $file->store("services/{$site->slug}", 'public'))
+            ->all();
+
         $service = Service::create([
             'site_id' => $site->id,
             'service_type_id' => $validated['service_type_id'],
@@ -159,6 +165,7 @@ class AdminServiceController extends Controller
             'price_note' => $validated['price_note'] ?? null,
             'thumbnail_path' => $thumbnailPath,
             'icon_path' => $iconPath,
+            'images' => $images ?: null,
             'is_featured' => $validated['is_featured'] ?? false,
             'is_active' => $validated['is_active'] ?? true,
             'order' => $validated['order'] ?? 0,
@@ -201,6 +208,8 @@ class AdminServiceController extends Controller
             'order' => ['integer'],
             'thumbnail' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp', 'max:10240'],
             'icon' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,svg', 'max:5120'],
+            'images' => ['nullable', 'array'],
+            'images.*' => ['file', 'mimes:jpg,jpeg,png,webp', 'max:10240'],
         ]);
 
         if (isset($validated['slug'])) {
@@ -216,6 +225,14 @@ class AdminServiceController extends Controller
             $validated['icon_path'] = $request->file('icon')->store("services/icons/{$site->slug}", 'public');
         }
         unset($validated['icon']);
+
+        if ($request->hasFile('images')) {
+            $validated['images'] = collect($request->file('images'))
+                ->map(fn ($file) => $file->store("services/{$site->slug}", 'public'))
+                ->all();
+        } else {
+            unset($validated['images']);
+        }
 
         $service->update($validated);
 

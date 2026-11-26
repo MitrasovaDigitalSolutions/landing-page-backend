@@ -82,6 +82,9 @@ class MediaLibrary
         foreach (Service::where('site_id', $site->id)->get() as $row) {
             $add($row->thumbnail_path, 'service', $row->id, $row->name, 'thumbnail_path');
             $add($row->icon_path, 'service', $row->id, $row->name, 'icon_path');
+            foreach ((array) $row->images as $i => $path) {
+                $add($path, 'service', $row->id, $row->name, "images.{$i}");
+            }
         }
 
         foreach (Portfolio::where('site_id', $site->id)->get() as $row) {
@@ -237,6 +240,7 @@ class MediaLibrary
         };
 
         $updateSimple(Service::where('site_id', $site->id)->get(), ['thumbnail_path', 'icon_path']);
+        $updateLists(Service::where('site_id', $site->id)->get(), ['images']);
         $updateSimple(Article::where('site_id', $site->id)->get(), ['thumbnail_path']);
         $updateSimple(Partner::where('site_id', $site->id)->get(), ['logo_path']);
         $updateSimple(Testimonial::where('site_id', $site->id)->get(), ['avatar_path']);

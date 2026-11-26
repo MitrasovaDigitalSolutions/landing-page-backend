@@ -272,3 +272,45 @@ Tugas portal (halaman `/media`):
 4. Setelah replace/delete → invalidasi query media **dan** query konten terkait (service/pages/portfolio/…) karena gambarnya berubah.
 
 Landing page tidak perlu perubahan: `url` yang dipakai sudah mengandung `?v=`, jadi gambar baru langsung terlihat.
+
+---
+
+## 13. Partner phone & galeri gambar produk
+
+### Partner
+
+Field baru: `phone` (string, nullable, maks 30). Tersedia di:
+
+- `GET /api/v1/partners` → `data[].phone`
+- `POST/PUT /api/v1/admin/partners` → kirim `phone` (opsional)
+
+Tugas portal: tambahkan input telepon di dialog partner (boleh kosong).
+
+### Produk (services)
+
+`thumbnail_path` / `thumbnail_url` tetap **cover** (1 gambar). Ada field baru:
+
+```json
+{
+  "thumbnail_url": "http://.../storage/services/ksp/cover.webp",
+  "images": ["services/ksp/foto-1.webp", "services/ksp/foto-2.webp"],
+  "image_urls": ["http://.../storage/services/ksp/foto-1.webp", "http://.../storage/services/ksp/foto-2.webp"]
+}
+```
+
+Aturan admin (multipart):
+
+- `images[]` — array file, maks 10 MB per file (jpg, jpeg, png, webp).
+- Bila `images[]` dikirim → **menggantikan seluruh galeri lama**.
+- Bila tidak dikirim → galeri lama tidak berubah.
+- `thumbnail` tetap terpisah (cover kartu produk).
+
+Tugas portal:
+
+- Form service: tambah `FormMultiImageUpload` untuk `images[]`, tampilkan `image_urls` yang sudah ada, kirim ulang file hanya bila diganti.
+- Halaman media: gambar galeri muncul dengan `usage.type = "service"`, `field = "images.0"`, dst.
+
+Tugas landing:
+
+- Kartu produk tetap pakai `thumbnail_url`.
+- Detail/galeri produk pakai `image_urls` (fallback ke `thumbnail_url` bila kosong).

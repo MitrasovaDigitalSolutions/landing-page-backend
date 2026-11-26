@@ -16,6 +16,7 @@ class Partner extends Model
         'name',
         'logo_path',
         'website_url',
+        'phone',
         'order',
     ];
 

@@ -6355,6 +6355,24 @@
                         "type": "string",
                         "nullable": true
                     },
+                    "images": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Gambar tambahan (galeri), path relatif storage.",
+                        "example": [
+                            "services/ksp/produk-1.webp",
+                            "services/ksp/produk-2.webp"
+                        ]
+                    },
+                    "image_urls": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "URL absolut dari images."
+                    },
                     "features": {
                         "type": "array",
                         "items": {
@@ -6858,6 +6876,12 @@
                         "type": "string",
                         "nullable": true,
                         "example": "https://bankmandiri.co.id"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "nullable": true,
+                        "maxLength": 30,
+                        "example": "081234567890"
                     },
                     "order": {
                         "type": "integer",
@@ -7379,6 +7403,14 @@
                         "type": "string",
                         "format": "binary",
                         "description": "Maks 10MB (jpg, png, webp, svg)"
+                    },
+                    "images": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "binary"
+                        },
+                        "description": "Gambar tambahan (galeri). Dikirim sebagai images[] multipart; maks 10MB per file (jpg, png, webp). Bila diisi, menggantikan galeri lama."
                     }
                 }
             },
@@ -7620,6 +7652,12 @@
                         "type": "string",
                         "format": "uri",
                         "nullable": true
+                    },
+                    "phone": {
+                        "type": "string",
+                        "maxLength": 30,
+                        "nullable": true,
+                        "example": "081234567890"
                     },
                     "order": {
                         "type": "integer",
