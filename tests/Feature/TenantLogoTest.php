@@ -58,6 +58,12 @@ class TenantLogoTest extends TestCase
 
         $this->assertSame($path, $settings->json('data.general.logo_path'));
         $this->assertSame(url('storage/' . $path), $settings->json('data.general.logo_url'));
+
+        $adminSettings = $this->withHeaders($this->headers('transportasi'))
+            ->getJson('/api/v1/admin/settings')
+            ->assertStatus(200);
+
+        $this->assertSame(url('storage/' . $path), $adminSettings->json('data.general.logo_url'));
     }
 
     public function test_replacing_logo_creates_new_path(): void

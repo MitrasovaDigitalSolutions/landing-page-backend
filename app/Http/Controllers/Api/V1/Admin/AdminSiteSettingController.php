@@ -17,7 +17,18 @@ class AdminSiteSettingController extends Controller
 
         $grouped = [];
         foreach ($settings as $setting) {
+            // *_url derived, never stored
+            if (str_ends_with($setting->key, '_url')) {
+                continue;
+            }
+
             $grouped[$setting->group][$setting->key] = $setting->value;
+
+            if (str_ends_with($setting->key, '_path') && is_string($setting->value) && $setting->value !== '') {
+                $grouped[$setting->group][substr($setting->key, 0, -5) . '_url'] = str_starts_with($setting->value, 'http')
+                    ? $setting->value
+                    : url('storage/' . ltrim($setting->value, '/'));
+            }
         }
 
         return response()->json([
