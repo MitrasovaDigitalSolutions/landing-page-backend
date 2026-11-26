@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\SiteSetting;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class AdminSiteSettingController extends Controller
 {
@@ -57,6 +58,37 @@ class AdminSiteSettingController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Settings updated successfully',
+        ]);
+    }
+
+    /**
+     * Upload logo tenant; disimpan ke branding/<slug>-logo-<timestamp>.<ext>
+     * dan dicatat sebagai setting general.logo_path.
+     */
+    public function uploadLogo(Request $request): JsonResponse
+    {
+        $request->validate([
+            'logo' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,svg', 'max:5120'],
+        ]);
+
+        $site = app('current_site');
+        $file = $request->file('logo');
+        $name = "{$site->slug}-logo-" . now()->timestamp . '-' . Str::lower(Str::random(4)) . '.' . $file->extension();
+
+        $path = $file->storeAs('branding', $name, 'public');
+
+        SiteSetting::updateOrCreate(
+            ['site_id' => $site->id, 'key' => 'logo_path'],
+            ['group' => 'general', 'value' => $path]
+        );
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Logo updated successfully',
+            'data' => [
+                'logo_path' => $path,
+                'logo_url' => url('storage/' . ltrim($path, '/')),
+            ],
         ]);
     }
 }
