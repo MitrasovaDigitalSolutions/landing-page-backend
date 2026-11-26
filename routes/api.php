@@ -80,7 +80,6 @@ Route::prefix('v1')->group(function () {
         // Settings
         Route::get('/settings', [AdminSiteSettingController::class, 'index']);
         Route::post('/settings', [AdminSiteSettingController::class, 'update']);
-        Route::post('/settings/logo', [AdminSiteSettingController::class, 'uploadLogo']);
 
         // Section Types
         Route::get('/section-types', [AdminSectionTypeController::class, 'index']);

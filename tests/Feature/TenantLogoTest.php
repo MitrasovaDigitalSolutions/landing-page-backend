@@ -36,7 +36,7 @@ class TenantLogoTest extends TestCase
     public function test_admin_uploads_logo_and_public_settings_expose_it(): void
     {
         $response = $this->withHeaders($this->headers('transportasi'))
-            ->post('/api/v1/admin/settings/logo', ['logo' => $this->fakeLogo()])
+            ->post('/api/v1/admin/settings', ['logo' => $this->fakeLogo()])
             ->assertStatus(200)
             ->assertJsonPath('success', true);
 
@@ -63,12 +63,12 @@ class TenantLogoTest extends TestCase
     public function test_replacing_logo_creates_new_path(): void
     {
         $first = $this->withHeaders($this->headers('transportasi'))
-            ->post('/api/v1/admin/settings/logo', ['logo' => $this->fakeLogo()])
+            ->post('/api/v1/admin/settings', ['logo' => $this->fakeLogo()])
             ->assertStatus(200)
             ->json('data.logo_path');
 
         $second = $this->withHeaders($this->headers('transportasi'))
-            ->post('/api/v1/admin/settings/logo', ['logo' => $this->fakeLogo('logo-baru.png')])
+            ->post('/api/v1/admin/settings', ['logo' => $this->fakeLogo('logo-baru.png')])
             ->assertStatus(200)
             ->json('data.logo_path');
 
@@ -80,7 +80,7 @@ class TenantLogoTest extends TestCase
     public function test_logo_upload_rejects_non_image(): void
     {
         $this->withHeaders($this->headers('transportasi'))
-            ->post('/api/v1/admin/settings/logo', [
+            ->post('/api/v1/admin/settings', [
                 'logo' => UploadedFile::fake()->create('logo.pdf', 32, 'application/pdf'),
             ])
             ->assertStatus(422)
@@ -94,7 +94,7 @@ class TenantLogoTest extends TestCase
             ->json('data.general.logo_path');
 
         $this->withHeaders($this->headers('transportasi'))
-            ->post('/api/v1/admin/settings/logo', ['logo' => $this->fakeLogo()])
+            ->post('/api/v1/admin/settings', ['logo' => $this->fakeLogo()])
             ->assertStatus(200);
 
         $this->assertSame(

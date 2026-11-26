@@ -1379,7 +1379,7 @@
                 "tags": [
                     "Admin - Settings"
                 ],
-                "summary": "Bulk upsert setting (key-value)",
+                "summary": "Bulk upsert setting (JSON) atau upload logo tenant (multipart)",
                 "security": [
                     {
                         "bearerAuth": []
@@ -1392,82 +1392,22 @@
                             "schema": {
                                 "$ref": "#/components/schemas/SettingsBulkRequest"
                             }
-                        }
-                    }
-                },
-                "responses": [
-                    {
-                        "description": "Berhasil",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/AdminMessageResponse"
-                                }
-                            }
-                        }
-                    },
-                    {
-                        "$ref": "#/components/responses/Unauthorized"
-                    },
-                    {
-                        "$ref": "#/components/responses/Forbidden"
-                    },
-                    {
-                        "$ref": "#/components/responses/MissingSiteKey"
-                    },
-                    {
-                        "$ref": "#/components/responses/SiteNotFound"
-                    },
-                    {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ValidationErrorResponse"
-                                }
-                            }
                         },
-                        "description": "Validasi gagal"
-                    }
-                ],
-                "parameters": [
-                    {
-                        "name": "X-Site-Key",
-                        "in": "header",
-                        "required": true,
-                        "description": "Tenant API key (mis. key-ksp-12345) atau slug site (mis. ksp).",
-                        "schema": {
-                            "type": "string",
-                            "example": "key-ksp-12345"
-                        }
-                    }
-                ]
-            }
-        },
-        "/api/v1/admin/settings/logo": {
-            "post": {
-                "tags": [
-                    "Admin - Settings"
-                ],
-                "summary": "Upload / ganti logo tenant",
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
                         "multipart/form-data": {
                             "schema": {
                                 "type": "object",
-                                "required": [
-                                    "logo"
-                                ],
                                 "properties": {
+                                    "settings": {
+                                        "type": "array",
+                                        "description": "Opsional bila hanya mengunggah logo. Bentuk item sama dengan SettingsBulkRequest.",
+                                        "items": {
+                                            "type": "object"
+                                        }
+                                    },
                                     "logo": {
                                         "type": "string",
                                         "format": "binary",
-                                        "description": "jpg, jpeg, png, webp, atau svg; maks 5MB"
+                                        "description": "jpg, jpeg, png, webp, atau svg; maks 5MB. Menyimpan file baru dan memperbarui general.logo_path."
                                     }
                                 }
                             }

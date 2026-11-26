@@ -319,17 +319,19 @@ Tugas landing:
 
 ## 14. Logo tenant (setting)
 
-Backend menyediakan endpoint upload logo tenant (sebelumnya logo hanya bisa diisi lewat seeder).
+Upload logo memakai endpoint settings yang sama (tidak ada endpoint terpisah):
 
 | Method | Path | Body | Respons |
 |---|---|---|---|
-| `POST` | `/api/v1/admin/settings/logo` | multipart `logo` (jpg/jpeg/png/webp/svg, maks 5 MB) | `data.logo_path`, `data.logo_url` |
+| `POST` | `/api/v1/admin/settings` | **JSON**: `{ settings: [...] }` seperti biasa<br>**multipart**: `logo` (jpg/jpeg/png/webp/svg, maks 5 MB), `settings` opsional | `data.logo_path`, `data.logo_url` bila mengirim logo |
 
 Detail:
 
+- Logo saja: kirim multipart hanya dengan field `logo` (tanpa `settings`).
+- Simpan setting + ganti logo sekaligus: multipart dengan `settings[...]` dan `logo`.
 - File disimpan sebagai `branding/<slug>-logo-<timestamp>-<random>.<ext>` (path baru setiap upload → cache aman).
 - Setting `general.logo_path` otomatis diperbarui.
 - `GET /api/v1/settings` (publik) sudah mengembalikan `general.logo_path` dan `general.logo_url` absolut.
 - Logo lama **tidak dihapus otomatis**; akan muncul sebagai file *unused* di Galeri Media.
 
-Tugas portal: ganti kartu "Logo Tenant Saat Ini" menjadi upload + preview. Jangan mengirim `logo_path` lewat bulk `POST /admin/settings` (biarkan endpoint logo yang mengatur). Tugas landing: pakai `general.logo_url` untuk logo header/footer.
+Tugas portal: ganti kartu "Logo Tenant Saat Ini" menjadi upload + preview, kirim FormData `logo` ke `POST /admin/settings`. Tugas landing: pakai `general.logo_url` untuk logo header/footer.

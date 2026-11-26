@@ -29,15 +29,16 @@ class AdminSiteSettingController extends Controller
     public function update(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'settings' => ['required', 'array'],
+            'settings' => ['required_without:logo', 'array'],
             'settings.*.group' => ['required', 'string', 'max:50'],
             'settings.*.key' => ['required', 'string', 'max:50'],
             'settings.*.value' => ['present'],
+            'logo' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,svg', 'max:5120'],
         ]);
 
         $site = app('current_site');
 
-        foreach ($validated['settings'] as $item) {
+        foreach ($validated['settings'] ?? [] as $item) {
             // key *_url adalah nilai turunan dari *_path (dibuat otomatis oleh endpoint publik), jangan disimpan
             if (str_ends_with($item['key'], '_url')) {
                 continue;
@@ -55,40 +56,28 @@ class AdminSiteSettingController extends Controller
             );
         }
 
+        $logo = null;
+
+        if ($request->hasFile('logo')) {
+            $file = $request->file('logo');
+            $name = "{$site->slug}-logo-" . now()->timestamp . '-' . Str::lower(Str::random(4)) . '.' . $file->extension();
+            $path = $file->storeAs('branding', $name, 'public');
+
+            SiteSetting::updateOrCreate(
+                ['site_id' => $site->id, 'key' => 'logo_path'],
+                ['group' => 'general', 'value' => $path]
+            );
+
+            $logo = [
+                'logo_path' => $path,
+                'logo_url' => url('storage/' . ltrim($path, '/')),
+            ];
+        }
+
         return response()->json([
             'success' => true,
             'message' => 'Settings updated successfully',
-        ]);
-    }
-
-    /**
-     * Upload logo tenant; disimpan ke branding/<slug>-logo-<timestamp>.<ext>
-     * dan dicatat sebagai setting general.logo_path.
-     */
-    public function uploadLogo(Request $request): JsonResponse
-    {
-        $request->validate([
-            'logo' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,svg', 'max:5120'],
-        ]);
-
-        $site = app('current_site');
-        $file = $request->file('logo');
-        $name = "{$site->slug}-logo-" . now()->timestamp . '-' . Str::lower(Str::random(4)) . '.' . $file->extension();
-
-        $path = $file->storeAs('branding', $name, 'public');
-
-        SiteSetting::updateOrCreate(
-            ['site_id' => $site->id, 'key' => 'logo_path'],
-            ['group' => 'general', 'value' => $path]
-        );
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Logo updated successfully',
-            'data' => [
-                'logo_path' => $path,
-                'logo_url' => url('storage/' . ltrim($path, '/')),
-            ],
+            'data' => $logo,
         ]);
     }
 }
