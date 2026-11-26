@@ -121,20 +121,20 @@ class SeedTransportFleet extends Command
         $services = [
             'hiace-commuter' => ['Hiace Commuter', 'hiace-elf', 'Kapasitas 14 seat · Cocok untuk keluarga dan rombongan kecil', $hiace],
             'elf-coaster-jumbo' => ['Elf Coaster Jumbo', 'hiace-elf', 'Kapasitas 18 seat · Rombongan sedang', $elf],
-            'medium-bus-kresna' => ['Medium Bus Kresna', 'medium-bus', 'Kapasitas 33+1 seat · JetBus 3', $medium],
-            'medium-bus-arjuna' => ['Medium Bus Arjuna', 'medium-bus', 'Kapasitas 33+1 seat · JetBus 3', $medium],
-            'big-bus-sadewa' => ['Big Bus Sadewa', 'big-bus', 'Kapasitas 50–52+1 seat · JetBus 3', $jetbus3],
-            'big-bus-werkudara' => ['Big Bus Werkudara', 'big-bus', 'Kapasitas 50–52+1 seat · JetBus 3', $jetbus3],
-            'big-bus-puntadewa' => ['Big Bus Puntadewa', 'big-bus', 'Kapasitas 50–52+1 seat · JetBus 3', $jetbus3],
-            'big-bus-gatot-kaca' => ['Big Bus Gatot Kaca', 'big-bus', 'Kapasitas 50–52+1 seat · JetBus 3', $jetbus3],
-            'big-bus-abimanyu' => ['Big Bus Abimanyu', 'big-bus', 'Kapasitas 50–52+1 seat · JetBus 3', $jetbus3],
-            'big-bus-antasena' => ['Big Bus Antasena', 'big-bus', 'Kapasitas 50–52+1 seat · JetBus 3', $jetbus3],
-            'big-bus-wisanggeni' => ['Big Bus Wisanggeni', 'big-bus', 'Kapasitas 50–52+1 seat · JetBus 5', $jetbus5],
-            'big-bus-parikesit' => ['Big Bus Parikesit', 'big-bus', 'Kapasitas 50–52+1 seat · JetBus 5', $jetbus5],
-            'big-bus-antareja' => ['Big Bus Antareja', 'big-bus', 'Kapasitas 50–52+1 seat · JetBus 5', $jetbus5],
-            'big-bus-basudewa' => ['Big Bus Basudewa', 'big-bus', 'Kapasitas 50–52+1 seat · JetBus 5', $jetbus5],
-            'big-bus-baladewa' => ['Big Bus Baladewa', 'big-bus', 'Kapasitas 50–52+1 seat · JetBus 5', $jetbus5],
-            'big-bus-nakula' => ['Big Bus Nakula', 'big-bus', 'Kapasitas 50–52+1 seat · JetBus 5', $jetbus5],
+            'medium-bus-kresna' => ['Kresna', 'medium-bus', 'Kapasitas 33+1 seat · JetBus 3', $medium],
+            'medium-bus-arjuna' => ['Arjuna', 'medium-bus', 'Kapasitas 33+1 seat · JetBus 3', $medium],
+            'big-bus-sadewa' => ['Sadewa', 'big-bus', 'Kapasitas 50–52+1 seat · JetBus 3', $jetbus3],
+            'big-bus-werkudara' => ['Werkudara', 'big-bus', 'Kapasitas 50–52+1 seat · JetBus 3', $jetbus3],
+            'big-bus-puntadewa' => ['Puntadewa', 'big-bus', 'Kapasitas 50–52+1 seat · JetBus 3', $jetbus3],
+            'big-bus-gatot-kaca' => ['Gatot Kaca', 'big-bus', 'Kapasitas 50–52+1 seat · JetBus 3', $jetbus3],
+            'big-bus-abimanyu' => ['Abimanyu', 'big-bus', 'Kapasitas 50–52+1 seat · JetBus 3', $jetbus3],
+            'big-bus-antasena' => ['Antasena', 'big-bus', 'Kapasitas 50–52+1 seat · JetBus 3', $jetbus3],
+            'big-bus-wisanggeni' => ['Wisanggeni', 'big-bus', 'Kapasitas 50–52+1 seat · JetBus 5', $jetbus5],
+            'big-bus-parikesit' => ['Parikesit', 'big-bus', 'Kapasitas 50–52+1 seat · JetBus 5', $jetbus5],
+            'big-bus-antareja' => ['Antareja', 'big-bus', 'Kapasitas 50–52+1 seat · JetBus 5', $jetbus5],
+            'big-bus-basudewa' => ['Basudewa', 'big-bus', 'Kapasitas 50–52+1 seat · JetBus 5', $jetbus5],
+            'big-bus-baladewa' => ['Baladewa', 'big-bus', 'Kapasitas 50–52+1 seat · JetBus 5', $jetbus5],
+            'big-bus-nakula' => ['Nakula', 'big-bus', 'Kapasitas 50–52+1 seat · JetBus 5', $jetbus5],
         ];
 
         $featured = ['hiace-commuter', 'medium-bus-kresna', 'big-bus-sadewa'];
@@ -169,23 +169,23 @@ class SeedTransportFleet extends Command
     {
         return [
             'fasilitas' => [
-                ['Fasilitas apa saja yang didapat?', 'Fasilitas tiap unit berbeda. Daftar lengkapnya bisa dilihat di halaman armada/layanan.'],
+                ['Fasilitas apa saja yang didapat?', 'Setiap unit memiliki fasilitas yang berbeda. Rincian fasilitas—seperti AC, TV LED, USB charger, dispenser, cooling box, dan leg rest—dapat dilihat pada halaman armada yang Anda pilih.'],
             ],
             'pemesanan' => [
-                ['Bagaimana cara cek ketersediaan armada?', 'Hubungi admin via WhatsApp. Ketersediaan dikonfirmasi saat pemesanan.'],
-                ['Bisa pesan mendadak?', 'Pemesanan mendadak maksimal H-7. Kurang dari itu dikenakan denda 50% dari harga sewa.'],
+                ['Bagaimana cara cek ketersediaan armada?', 'Silakan hubungi admin melalui WhatsApp. Ketersediaan armada akan dikonfirmasi pada saat pemesanan agar jadwal yang Anda pilih dapat kami amankan.'],
+                ['Bisa pesan mendadak?', 'Pemesanan mendadak dapat dilayani paling lambat H-7 sebelum keberangkatan. Untuk pemesanan kurang dari H-7, dikenakan biaya tambahan sebesar 50% dari harga sewa.'],
             ],
             'pembayaran' => [
-                ['Apakah DP wajib?', 'Ya, DP wajib untuk mengunci jadwal.'],
-                ['Berapa minimal DP?', 'Minimal Rp500.000.'],
-                ['Kalau sudah DP lalu dibatalkan?', 'DP hangus.'],
-                ['Apakah harga sudah termasuk dokumentasi?', 'Belum. Harga sewa hanya untuk kendaraan.'],
+                ['Apakah DP wajib?', 'Ya. DP diperlukan untuk mengunci tanggal dan armada yang Anda pilih.'],
+                ['Berapa minimal DP?', 'DP minimal Rp500.000 per pemesanan.'],
+                ['Kalau sudah DP lalu dibatalkan?', 'DP yang telah dibayarkan tidak dapat dikembalikan (hangus) apabila pembatalan dilakukan oleh penyewa.'],
+                ['Apakah harga sudah termasuk dokumentasi?', 'Belum. Harga sewa hanya mencakup kendaraan dan layanan pengemudi; dokumentasi dapat diatur terpisah.'],
             ],
             'operasional' => [
-                ['Apakah wajib mampir ke tempat oleh-oleh?', 'Tidak wajib.'],
-                ['Sehari bisa ke berapa tujuan?', '2–3 tempat. Bisa lebih dengan kesepakatan, maksimal sampai pukul 23.00.'],
-                ['Sampai jam berapa operasional?', 'Maksimal pukul 23.00.'],
-                ['Tujuan bisa ke mana saja?', 'Bisa ke mana saja. Biaya menyesuaikan rute dan didiskusikan.'],
+                ['Apakah wajib mampir ke tempat oleh-oleh?', 'Tidak wajib. Kunjungan ke tempat oleh-oleh dapat disesuaikan dengan rencana perjalanan Anda.'],
+                ['Sehari bisa ke berapa tujuan?', 'Dalam satu hari, perjalanan dapat mencakup 2–3 tujuan. Penambahan tujuan dapat didiskusikan selama tidak melewati batas operasional pukul 23.00.'],
+                ['Sampai jam berapa operasional?', 'Layanan operasional maksimal sampai pukul 23.00.'],
+                ['Tujuan bisa ke mana saja?', 'Tujuan dapat disesuaikan dengan kebutuhan Anda. Biaya sewa akan menyesuaikan rute dan jarak tempuh, dan dapat didiskusikan dengan admin.'],
             ],
         ];
     }
