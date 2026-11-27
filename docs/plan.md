@@ -346,3 +346,15 @@ Field baru: `whatsapp` (string, nullable, maks 30) di `branches`.
 - `POST/PUT /api/v1/admin/branches` → kirim `whatsapp` (opsional, boleh null untuk menghapus)
 
 Tugas portal: tambah input "Nomor WhatsApp" di dialog cabang. Tugas landing: tombol chat cabang memakai `https://wa.me/<whatsapp>` (nomor diawali 62), fallback ke `phone` bila kosong.
+
+---
+
+## 16. Google Maps per cabang
+
+Field baru: `maps_embed` (text, nullable, maks 2000) di `branches`. Isinya **URL embed Google Maps** (nilai `src` iframe), sama formatnya dengan setting `contact.maps_embed`.
+
+- `GET /api/v1/branches` → `data[].maps_embed`
+- `POST/PUT /api/v1/admin/branches` → kirim `maps_embed` (opsional, boleh `null` untuk menghapus)
+- Rekomendasi landing: render `<iframe src="{maps_embed}" loading="lazy" ...>`; jika `null`, sembunyikan peta cabang atau fallback ke `contact.maps_embed` dari `/settings`.
+
+Tugas portal: tambah input "Google Maps Embed URL" di dialog cabang (textarea/URL).

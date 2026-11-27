@@ -17,6 +17,7 @@ class Branch extends Model
         'address',
         'phone',
         'whatsapp',
+        'maps_embed',
         'is_primary',
         'images',
         'order',

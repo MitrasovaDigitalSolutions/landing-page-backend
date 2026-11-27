@@ -7828,6 +7828,13 @@
                         "nullable": true,
                         "example": "6282247170756"
                     },
+                    "maps_embed": {
+                        "type": "string",
+                        "nullable": true,
+                        "maxLength": 2000,
+                        "description": "URL embed Google Maps (nilai src iframe) khusus cabang ini.",
+                        "example": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1045.89!2d111.0497!3d-7.5448"
+                    },
                     "is_primary": {
                         "type": "boolean",
                         "example": true
@@ -7960,6 +7967,13 @@
                         "maxLength": 30,
                         "nullable": true,
                         "example": "6282247170756"
+                    },
+                    "maps_embed": {
+                        "type": "string",
+                        "nullable": true,
+                        "maxLength": 2000,
+                        "description": "URL embed Google Maps (nilai src iframe) khusus cabang ini.",
+                        "example": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1045.89!2d111.0497!3d-7.5448"
                     },
                     "is_primary": {
                         "type": "boolean",
