@@ -16,6 +16,7 @@ class Branch extends Model
         'name',
         'address',
         'phone',
+        'whatsapp',
         'is_primary',
         'images',
         'order',

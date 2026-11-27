@@ -7822,6 +7822,12 @@
                         "maxLength": 40,
                         "example": "(0271)-6493247"
                     },
+                    "whatsapp": {
+                        "type": "string",
+                        "maxLength": 30,
+                        "nullable": true,
+                        "example": "6282247170756"
+                    },
                     "is_primary": {
                         "type": "boolean",
                         "example": true
@@ -7948,6 +7954,12 @@
                         "type": "string",
                         "maxLength": 40,
                         "example": "(0271)-6493168"
+                    },
+                    "whatsapp": {
+                        "type": "string",
+                        "maxLength": 30,
+                        "nullable": true,
+                        "example": "6282247170756"
                     },
                     "is_primary": {
                         "type": "boolean",

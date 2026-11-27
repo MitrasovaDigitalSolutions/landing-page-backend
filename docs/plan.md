@@ -335,3 +335,14 @@ Detail:
 - Logo lama **tidak dihapus otomatis**; akan muncul sebagai file *unused* di Galeri Media.
 
 Tugas portal: ganti kartu "Logo Tenant Saat Ini" menjadi upload + preview, kirim FormData `logo` ke `POST /admin/settings`. Tugas landing: pakai `general.logo_url` untuk logo header/footer.
+
+---
+
+## 15. Nomor WhatsApp cabang
+
+Field baru: `whatsapp` (string, nullable, maks 30) di `branches`.
+
+- `GET /api/v1/branches` → `data[].whatsapp`
+- `POST/PUT /api/v1/admin/branches` → kirim `whatsapp` (opsional, boleh null untuk menghapus)
+
+Tugas portal: tambah input "Nomor WhatsApp" di dialog cabang. Tugas landing: tombol chat cabang memakai `https://wa.me/<whatsapp>` (nomor diawali 62), fallback ke `phone` bila kosong.
