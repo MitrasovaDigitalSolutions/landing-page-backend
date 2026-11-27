@@ -140,4 +140,29 @@ class MediaLibraryTest extends TestCase
             ->deleteJson('/api/v1/admin/media', ['path' => '../../.env', 'force' => true])
             ->assertStatus(422);
     }
+
+    public function test_template_assets_are_scoped_to_their_tenant(): void
+    {
+        Storage::disk('public')->put('template/transportasi/armada/bus.png', 'x');
+        Storage::disk('public')->put('template/ksp/armada/bus.png', 'x');
+
+        $kspPaths = collect($this->withHeaders($this->headers())->getJson('/api/v1/admin/media')->json('data'))
+            ->pluck('path');
+
+        $this->assertFalse($kspPaths->contains('template/transportasi/armada/bus.png'));
+        $this->assertTrue($kspPaths->contains('template/ksp/armada/bus.png'));
+
+        $token = $this->postJson('/api/v1/auth/login', [
+            'email' => 'admin@mitrasova.com',
+            'password' => 'password123',
+        ])->json('data.token');
+
+        $transportPaths = collect($this->withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+            'X-Site-Key' => 'transportasi',
+        ])->getJson('/api/v1/admin/media')->json('data'))->pluck('path');
+
+        $this->assertTrue($transportPaths->contains('template/transportasi/armada/bus.png'));
+        $this->assertFalse($transportPaths->contains('template/ksp/armada/bus.png'));
+    }
 }

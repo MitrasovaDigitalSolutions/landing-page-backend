@@ -305,6 +305,11 @@ class MediaLibrary
             return null;
         }
 
+        // aset template per tenant: template/<slug>/...
+        if ($parts[0] === 'template' && isset($parts[1]) && in_array($parts[1], $slugs, true)) {
+            return $parts[1];
+        }
+
         if (! in_array($parts[0], self::SITE_DIRS, true)) {
             return null;
         }
